@@ -1,0 +1,15 @@
+{
+  "menu": "✦ ORIVELA STARFALL ✦\n.order — Format order\n.pricelist — Gambar daftar harga\n.harga Produk — Paket dan harga (contoh .harga Netflix)\n.promo — Promo aktif\n.rules — Ketentuan order\n.garansi — Hubungi admin\n♡ your digital space ☾",
+  "order": "✦ FORMAT ORDER ORIVELA ♡\nNama / Username :\nProduk :\nVarian / Tipe :\nDurasi :\nDevice/Lokasi :\nVoucher : -\n\nSalin dan isi form ini. Lihat .harga NamaProduk untuk daftar paket. Admin akan mengonfirmasi paket sebelum QRIS dikirim. Satu form untuk satu item. Voucher opsional; isi - bila tidak punya. Jangan kirim password/OTP.",
+  "rules": "Satu form untuk satu item. Pastikan paket sesuai. Voucher 5 hari, satu kali pakai, satu item, tidak dapat digabung. Cek nama merchant dan nominal sebelum bayar. Hubungi admin jika ada kendala.",
+  "garansi": "Hubungi admin dengan Order ID untuk informasi garansi paket yang dibeli.",
+  "welcome": "Hii, lovelies! ♡ Selamat datang di ORIVELA Starfall.\n\n➵ Ketik .menu untuk melihat layanan kami.\n➵ Ketik .promo untuk cek apakah ada promo yang sedang berlangsung hari ini.\n\nHappy shopping, lovelies! ✧",
+  "proses": "✦ ORDER PROCESSING ✦\n୨ৎ Order ID : #{id}\n\nHii, lovelies! ♡\nPembayaran kamu sudah dikonfirmasi, yaa! Pesanan sedang diproses oleh admin. Mohon ditunggu sebentar. Thank you for your patience! ✧\n\n　　　　⋆｡°✩°｡⋆\n　 *ORIVELA Starfall* · your digital space ☾",
+  "done": "Gunakan .d di grup Admin untuk menyelesaikan order.",
+  "paymentCaption": "✦ QRIS ORIVELA ♡\nUntuk order yang sudah memiliki ID, gunakan QRIS khusus tagihan order, bukan QRIS statis ini.",
+  "completed": "✦ ORDER COMPLETED ✦\n୨ৎ Order ID : #{id}\n\nHii, lovelies! ♡\nPesanan kamu sudah selesai diproses, yaa! Thank you for ordering at ORIVELA Starfall. We hope you enjoy your purchase! ✧\n\nThank you for trusting our little universe! Semoga kamu puas dengan pesananmu dan sampai jumpa di order berikutnya.\n\n　　　　⋆｡°✩°｡⋆\n　 *ORIVELA Starfall* · your digital space ☾",
+  "prosesManual": "✦ Pesanan sedang diproses oleh admin. ♡",
+  "orderReceived": "☾ Your order has been received! ♡\n\nThank you for placing your order, lovely! ✧\n\n✦ ORDER INFORMATION\n🧾 𝐎𝐫𝐝𝐞𝐫 𝐈𝐃 : {order_id}\n⏳ 𝐒𝐭𝐚𝐭𝐮𝐬 : Waiting for admin\n\n➵ Silakan menunggu hingga admin mengambil pesananmu. Setelah itu, aku akan mengirimkan QRIS untuk melanjutkan proses pembayaran.\n\n𖤐 Thank you for your patience! ♡\n\nORIVELA Starfall · your digital space ☾",
+  "invoicePayment": "✦ QRIS Payment · No Fee\n🧾 𝐎𝐫𝐝𝐞𝐫 𝐈𝐃 : {order_id}\n💳 𝐓𝐨𝐭𝐚𝐥 𝐏𝐚𝐲𝐦𝐞𝐧𝐭 : Rp{total}\n➵ Scan QRIS yang tersedia hanya selama 30 Menit\n➵ Lakukan pembayaran sesuai nominal yang tertera.\n➵ Kirim bukti pembayaran ke grup untuk proses verifikasi.\nThank you for your payment, lovelies! {buyer} ♡",
+  "paymentExpired": "✦ PAYMENT EXPIRED ✦\nHii, lovelies! {buyer} ♡\nWaktu pembayaran untuk order {order_id} sudah berakhir. silakan lakukan order kembali.\nORIVELA Starfall · your digital space ☾\n\nJika sudah membayar, hubungi admin untuk verifikasi. Jangan bayar QRIS lama."
+}

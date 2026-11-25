@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "createdAt": "2026-11-25T08:45:55.474Z",
+  "files": {
+    "discord/data/runtime/store.json": {
+      "version": 1,
+      "guildId": "1575061075534282815",
+      "schedule": {
+        "mode": "auto",
+        "open": "10:00",
+        "close": "00:00"
+      },
+      "channels": {},
+      "roles": {},
+      "panels": {},
+      "tickets": {},
+      "promos": [],
+      "counter": 0,
+      "welcomeQueue": {}
+    },
+    "wa/data/order-admin-locks.json": {
+      "version": 1,
+      "claims": {},
+      "messages": {}
+    },
+    "wa/data/luckyverse.json": {
+      "version": 1,
+      "players": {},
+      "vouchers": {}
+    }
+  }
+}

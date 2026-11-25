@@ -1,0 +1,6 @@
+Node.js 22.16.0, offline.
+- 7/7 tes shared + inisialisasi WA mock lulus.
+- 11/11 tes logika Discord V2.2 lulus.
+- Semua source .js lolos node --check.
+- QR nominal 12345 dirender 1024x1024 menggunakan dependency dari ZIP WA; decode berhasil dan field 54 benar.
+Belum diuji: instalasi npm aktual di KiosPanel, login Discord, /setup aktual, WA pairing, Jimp foto dinamis, traffic, RAM/storage, pembayaran sungguhan.

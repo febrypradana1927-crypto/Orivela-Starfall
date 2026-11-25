@@ -1,0 +1,11 @@
+node_modules/
+auth_info_baileys/
+config.json
+*.tmp
+*.log
+data/orders.json
+data/luckyverse.json
+data/order-admin-locks.json
+data/qris-invoices.json
+data/promotions.json
+data/store-schedule-state.json

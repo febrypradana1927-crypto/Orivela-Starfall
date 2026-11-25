@@ -1,0 +1,9 @@
+.env
+node_modules/
+.npm/
+wa/auth_info_baileys/
+wa/config.json
+wa/data/*.json
+!wa/data/texts.json
+discord/data/runtime/
+shared-data/

@@ -1,0 +1,70 @@
+ORIVELA STARFALL V3 — UNIFIED EDITION (TRIAL)
+===========================================
+Satu ZIP untuk instalasi baru. WA berasal dari orivelaWABOT.zip terbaru,
+Discord dari V2.1 + patch V2.2. Satu proses Node.js, dua koneksi.
+JANGAN menimpa hosting produksi sebelum pengujian berhasil.
+
+1. Buat server Discord baru di aplikasi Discord (+ > Create My Own).
+2. Buka https://discord.com/developers/applications > New Application.
+   Nama: Orivela Starfall. Bot > Reset Token > simpan token secara privat.
+   Aktifkan Server Members Intent dan Message Content Intent.
+   Installation > Guild Install > scopes bot, applications.commands.
+   Untuk setup awal server test, izin Administrator (sangat luas).
+   Copy install link, buka browser, Add to Server > server baru > Authorize.
+3. Discord User Settings > Developer > Developer Mode ON.
+   Klik kanan ikon server baru > Copy Server ID.
+4. KiosPanel > Stop (jika berjalan) > Files > Upload ZIP > Unarchive/Extract.
+   Isi ZIP langsung di /home/container: index.js, package.json, shared.js,
+   backup.js, wa/, discord/, .env. Jangan ada folder pembungkus.
+5. Settings > Node.js 22 LTS (minimal 22.12) atau 24 LTS > Simpan versi.
+   User Uploaded Files Ya (1); Auto Update Tidak (0); Main file index.js.
+   Git Repo, Branch, Additional Node Packages, Git Username, Git Token,
+   Uninstall Node Packages, Additional Arguments: kosong. Startup default.
+   Jika default gagal, gunakan: npm install --omit=dev --no-audit --no-fund && node index.js
+6. Files > buka .env (buat jika tidak terlihat), isi DISCORD_TOKEN dan GUILD_ID.
+   Biarkan WA_ENABLED=false dan QRIS_ENABLED=false dahulu.
+   Jangan kirim token/screenshot QR pairing ke chat orang lain.
+7. Console > Start. Instalasi npm perlu jaringan. Tunggu log ORIVELA V3 Discord online
+   dan Slash commands V3 terdaftar. Jika error, kirim log yang telah disensor.
+8. Di server Discord baru jalankan /setup sebagai Administrator. Bot membuat
+   channel, role, panel bergambar dan tombol. Pindahkan role bot di atas role yang
+   dikelolanya. Beri role Store Admin / Sales Staff / Warranty Staff /
+   Support Staff / Content Staff sesuai tugas. Tes dengan akun member lain.
+   /welcome repair member:... memulihkan welcome dan role yang terlewat.
+9. Setelah Discord OK, Stop. Edit .env: WA_ENABLED=true. Di wa/config.json,
+   isi botPhone format 62... jika menggunakan pairingMode code; ownerPhones
+   berisi nomor owner 62... (array string). Pairing default QR. Gunakan nomor WA
+   test dan tiga grup test untuk trial, JANGAN sambungkan grup pelanggan asli.
+   Jika mau pakai nomor WA lama, hentikan bot lama terlebih dahulu, backup auth
+   dan data lama, jangan jalankan dua instance sekaligus.
+10. Start. QR WA tampil di console: WA > Perangkat tertaut > Tautkan perangkat.
+    Scan QR secara privat (atau pairingMode code dengan botPhone diisi).
+    Masukkan WA bot sebagai anggota di tiga grup test terpisah; jadikan admin
+    bila diperlukan. Kirim .id di setiap grup untuk memperoleh ID ...@g.us.
+    Stop, isi groupId, adminGroupId, luckyverseGroupId di wa/config.json dengan
+    ID masing-masing grup. Start kembali. WA akan mengirim status toko ke grup.
+11. Di Discord /link > DM ke nomor WA bot dengan .link KODE (bukan di grup).
+    Jangan bagikan kode. Berlaku 10 menit, satu kali, mengaitkan akun WA yang
+    benar-benar mengirim DM. Lalu /game di game-zone. Identitas WA/LID mungkin
+    berbeda antar perangkat/grup; jika saldo lama berbeda, minta owner memeriksa,
+    jangan membuat atau menggabungkan saldo sembarangan.
+12. Tes Content Studio: /content information dan /content promo, atau tombol
+    di channel staff. WA admin: .notif atau .promo, reply pesan prompt bot.
+    Saat kedua koneksi aktif, informasi masuk antrean ke kedua platform.
+    Promo aktif satu campaign, slot bersama; foto Discord panel dinamis;
+    WA mendapat foto saat publish dan pemberitahuan promo berakhir. Gunakan
+    .promo untuk cek slot aktual. Form WA menerima caption; foto upload tidak
+    diteruskan, bot menggambar ulang caption memakai template Orivela.
+13. QRIS tetap NONAKTIF sampai owner verifikasi payload terbaru dan penerbit
+    mengizinkan QR nominal. Setelah itu .env QRIS_ENABLED=true dan
+    wa/config.json qrisInvoiceEnabled=true, qrisAutoPrice=true; Restart.
+    Uji merchant dan nominal QR melalui aplikasi pembayaran tanpa membayar
+    terlebih dahulu. Pembayaran manual: staff memeriksa dana masuk pada merchant.
+    Invoice 30 menit hanya kedaluwarsa pada bot, bukan jaminan QR tidak bisa
+    dibayar lagi. Jangan konfirmasi pembayaran dari screenshot saja.
+14. /sales untuk rekap order selesai gabungan, WA .rekap juga menampilkan
+    bagian gabungan. /backup khusus Administrator untuk data (tanpa token/session).
+    Download backup sebelum trial berakhir. Untuk migrasi penuh baca README.md.
+
+PENTING: jangan tempel ZIP ke kolom Enter a command. Upload ke menu Files.
+Tidak perlu upload node_modules/.npm atau membuat bot Discord tambahan lagi.
