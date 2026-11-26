@@ -20,7 +20,8 @@ const CFG = path.join(ROOT, 'config.json');
 const AUTH = path.join(ROOT, 'auth_info_baileys');
 const qrisInvoice = require('./qris-invoice');
 const { PromoManager } = require('./promo-system');
-const { AnnouncementManager } = require('./announcement-system');
+const { AnnouncementManager, memberJids } = require('./announcement-system');
+const posts=require('../discord/lib/text-posts'), postCatalog=require('../discord/data/catalog.json');
 const invoiceStore = new qrisInvoice.InvoiceStore(path.join(ROOT, 'data', 'qris-invoices.json'));
 const PAYMENT_TTL = 30 * 60000;
 const QRIS_PRICES = path.join(ROOT, '..', 'discord', 'data', 'catalog.json');
@@ -1640,7 +1641,7 @@ async function connect() {
       }
     }
     if (update.connection === 'open') {
-      B.waSender=async (event)=>{const c=loadConfig();if(activeSocket!==sock||!c.groupId)throw Error('WA belum online/grup Store belum diatur');const images=await B.images(event);for(const image of images)await sock.sendMessage(c.groupId,{image,caption:event.kind==='info'?event.body.slice(0,900):event.caption.slice(0,600)});};
+      B.waSender=async (event)=>{const c=loadConfig();if(activeSocket!==sock||!isGroupJid(c.groupId)||!sock.user?.id)throw Error('WA belum online/grup Store belum diatur');if(event.kind==='info'){const tag=event.tagAll===true;const ids=tag?memberJids(await sock.groupMetadata(c.groupId)):[];await sock.sendMessage(c.groupId,posts.waAnnouncement(event.body,ids,tag));return;}const pages=posts.promoPages(B.flatPromos(),B.allReservations(),postCatalog,{platform:'wa',onlyId:event.promoId});for(const p of pages)await sock.sendMessage(c.groupId,{text:p.title+'\n\n'+p.description});};
       console.log('✦ ORIVELA Starfall ONLINE!');
       console.log('✦ V5.0 | Store · Admin · Luckyverse | Promo · Announcement · Auto Open/Close');
       const c = loadConfig();

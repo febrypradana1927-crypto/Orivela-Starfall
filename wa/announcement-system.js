@@ -36,7 +36,7 @@ class AnnouncementManager {
       const d={chat,store:cfg.groupId,prompt:null,last:this.now(),busy:true};
       this.drafts.set(key,d);
       try{
-        const sent=await reply('✦ ANNOUNCEMENT SETUP ✦\n\nApa isi pengumuman yang ingin disampaikan?\n\n➵ Reply pesan ini dengan isi announcement. Bisa berupa teks atau foto dengan caption.\n\nKetik .cancelnotif untuk membatalkan. ♡');
+        const sent=await reply('✦ ANNOUNCEMENT SETUP ✦\n\nApa isi pengumuman yang ingin disampaikan?\n\n➵ Reply pesan ini dengan isi announcement. Kirim isi teks; jika berupa foto hanya caption yang dipakai.\n\nKetik .cancelnotif untuk membatalkan. ♡');
         if(!sent?.key?.id)throw Error('ID prompt tidak tersedia.');
         d.prompt=sent.key.id;d.last=this.now();
       }catch(e){this.drafts.delete(key);throw e;}finally{d.busy=false;}
@@ -58,7 +58,7 @@ class AnnouncementManager {
       for(const [k,t] of this.sent)if(this.now()-t>24*60*60_000||this.sent.size>2000)this.sent.delete(k);
       this.drafts.delete(key);
       // An acknowledgement failure must not re-open the already sent announcement.
-      try{await reply(`✅ Announcement masuk antrean posting foto WA dan Discord.`);}catch(e){console.error('Konfirmasi announcement gagal:',e.message);}
+      try{await reply(`✅ Announcement masuk antrean posting teks WA dan Discord.`);}catch(e){console.error('Konfirmasi announcement gagal:',e.message);}
     }catch(e){await reply(`✦ ${e.message}\nAnnouncement belum terkonfirmasi terkirim. Periksa Store sebelum mencoba lagi. .cancelnotif untuk batal.`);}
     finally{old.busy=false;}
     return true;

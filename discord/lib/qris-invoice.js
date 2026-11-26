@@ -97,12 +97,13 @@ class InvoiceStore {
     return invoice;
   }
 }
-async function render(invoice) {
-  const {PNG}=require('pngjs');
-  const template=PNG.sync.read(fs.readFileSync(path.join(__dirname,'..','assets','qr-reference.png')));
-  if(template.width!==1024||template.height!==1024)throw Error('Template QRIS harus 1024 × 1024.');
-  const modules=require('qrcode').create(invoice.payload,{errorCorrectionLevel:'M'}).modules;
-  const left=265,top=299,side=510,scale=Math.floor(side/(modules.size+8));
+// Celestial template has an opaque white panel. Keep QR modules pixel-aligned,
+// with a minimum four-module quiet zone on each edge. No scaling or antialiasing.
+const QR_PANEL=Object.freeze({left:344,top:400,side:566,width:1254,height:1254});
+function paintQR(template,modules) {
+  const {left,top,side,width,height}=QR_PANEL;
+  if(template.width!==width||template.height!==height)throw Error('Template QRIS harus 1254 × 1254.');
+  const scale=Math.floor(side/(modules.size+8));
   if(scale<5)throw Error('QR terlalu padat untuk template.');
   const startX=left+Math.floor((side-modules.size*scale)/2),startY=top+Math.floor((side-modules.size*scale)/2);
   for(let y=top;y<top+side;y++)for(let x=left;x<left+side;x++){
@@ -110,6 +111,17 @@ async function render(invoice) {
     const black=r>=0&&r<modules.size&&c>=0&&c<modules.size&&modules.get(r,c);
     const i=(y*template.width+x)*4;template.data[i]=template.data[i+1]=template.data[i+2]=black?0:255;template.data[i+3]=255;
   }
-  return PNG.sync.write(template);
+  return template;
 }
-module.exports = {amountValue,crc16,parsePayload,makeAmountPayload,catalogPrice,lookupCatalog,InvoiceStore,render};
+async function render(invoice) {
+  // Only render the already-validated invoice payload; the template has no QR.
+  const tags=parsePayload(invoice.payload);
+  if(tags.get('01')!=='12'||!tags.has('54'))throw Error('Payload invoice QRIS harus memiliki nominal.');
+  amountValue(tags.get('54'));
+  if(invoice.amount!==undefined&&amountValue(invoice.amount)!==amountValue(tags.get('54')))throw Error('Nominal invoice dan QRIS berbeda.');
+  const {PNG}=require('pngjs');
+  const template=PNG.sync.read(fs.readFileSync(path.join(__dirname,'..','assets','qr-celestial.png')));
+  const modules=require('qrcode').create(invoice.payload,{errorCorrectionLevel:'M'}).modules;
+  return PNG.sync.write(paintQR(template,modules));
+}
+module.exports = {amountValue,crc16,parsePayload,makeAmountPayload,catalogPrice,lookupCatalog,InvoiceStore,render,paintQR,QR_PANEL};

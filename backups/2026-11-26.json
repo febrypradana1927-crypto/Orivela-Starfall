@@ -1,0 +1,386 @@
+{
+  "version": 1,
+  "createdAt": "2026-11-25T17:26:41.791Z",
+  "files": {
+    "shared-data/state.json": {
+      "version": 1,
+      "schedule": {
+        "mode": "auto",
+        "open": "10:00",
+        "close": "00:00"
+      },
+      "links": {
+        "459919983204630530": "267246437949527@lid"
+      },
+      "codes": {},
+      "outbox": []
+    },
+    "discord/data/runtime/store.json": {
+      "version": 1,
+      "guildId": "1575061075534282815",
+      "schedule": {
+        "mode": "auto",
+        "open": "10:00",
+        "close": "00:00"
+      },
+      "channels": {
+        "cat_start": "1575070817790861332",
+        "cat_store": "1575070819611312219",
+        "cat_care": "1575070821465071616",
+        "cat_lucky": "1575070822878547980",
+        "cat_purchase": "1575070824988414026",
+        "cat_warranty": "1575070827370647582",
+        "cat_support": "1575070829556011050",
+        "cat_staff": "1575070831485390888",
+        "cat_archive": "1575070836686065775",
+        "welcome": "1575070839169093692",
+        "rules": "1575070841115254787",
+        "announcement": "1575070845292773426",
+        "status": "1575070847335534706",
+        "prices": "1575070850023948370",
+        "promo": "1575070852238811216",
+        "purchase": "1575070854088491058",
+        "testimonials": "1575070856131125269",
+        "terms": "1575070858458697731",
+        "warranty": "1575070860832673864",
+        "support": "1575070863265632277",
+        "games": "1575070865387819018",
+        "gameinfo": "1575070867212337152",
+        "orders": "1575070869372407818",
+        "complaints": "1575070872434380830",
+        "supportlog": "1575070876368371757",
+        "transactions": "1575070878692147283",
+        "transcripts": "1575070880772522016",
+        "sales": "1575070882794184704",
+        "botlog": "1575070886707339304",
+        "studio": "1575070888519540968"
+      },
+      "roles": {
+        "admin": "1575070801441325128",
+        "purchase": "1575070804272484393",
+        "warranty": "1575070805987954688",
+        "support": "1575070807376396369",
+        "customer": "1575070812258705408",
+        "member": "1575070814141685881",
+        "content": "1575070815962275861"
+      },
+      "panels": {
+        "status": "1575070892084428903",
+        "purchase": "1575070899793694847",
+        "warranty": "1575070908815777792",
+        "support": "1575070919704182844",
+        "prices": "1575070926821793793",
+        "rules": "1575070936112042126",
+        "terms": "1575070941661241428",
+        "gameinfo": "1575070959491092560",
+        "promo": "1575070976117440582",
+        "studio": "1575070979015708686"
+      },
+      "tickets": {
+        "ORV-00001": {
+          "id": "ORV-00001",
+          "type": "purchase",
+          "owner": "645225437404069889",
+          "channel": "1575072116645175296",
+          "status": "cancelled",
+          "createdAt": 1795596856243,
+          "details": {},
+          "control": "1575072127835574313",
+          "product": "ChatGPT",
+          "variant": "Sharing Plus",
+          "duration": "1 Month",
+          "amount": 30000,
+          "sku": "P085",
+          "price": 30000,
+          "discount": 0,
+          "total": 30000,
+          "voucher": null,
+          "promoId": null,
+          "device": "Helios / Surakarta",
+          "notes": "",
+          "orderedAt": 1795596922268,
+          "staff": "459919983204630530",
+          "cancelledAt": 1795596941775,
+          "closedAt": 1795597079828
+        },
+        "ORV-00002": {
+          "id": "ORV-00002",
+          "type": "support",
+          "owner": "645225437404069889",
+          "channel": "1575072829295034388",
+          "status": "resolved",
+          "createdAt": 1795597026249,
+          "details": {
+            "Kendala": "Halo sayang"
+          },
+          "control": "1575072839873077381",
+          "staff": "459919983204630530",
+          "doneAt": 1795597062184,
+          "closedAt": 1795597093024
+        },
+        "ORV-00003": {
+          "id": "ORV-00003",
+          "type": "support",
+          "owner": "645225437404069889",
+          "channel": "1575073116126838824",
+          "status": "resolved",
+          "createdAt": 1795597094575,
+          "details": {
+            "Kendala": "Haloooo aku sayang banget sama kamuuuuuuuuuuuuuuuu"
+          },
+          "control": "1575073126629515395",
+          "staff": "459919983204630530",
+          "doneAt": 1795597207897,
+          "closedAt": 1795597215613
+        },
+        "ORV-00004": {
+          "id": "ORV-00004",
+          "type": "purchase",
+          "owner": "645225437404069889",
+          "channel": "1575074875985502228",
+          "status": "cancelled",
+          "createdAt": 1795597514132,
+          "details": {},
+          "control": "1575074887876350136",
+          "cancelledAt": 1795597534352,
+          "closedAt": 1795597539797
+        },
+        "ORV-00005": {
+          "id": "ORV-00005",
+          "type": "purchase",
+          "owner": "903081591943860265",
+          "channel": "1575115600986902708",
+          "status": "completed",
+          "createdAt": 1795607223754,
+          "details": {},
+          "control": "1575115611414200465",
+          "product": "ChatGPT",
+          "variant": "Sharing Plus",
+          "duration": "1 Month",
+          "amount": 30000,
+          "sku": "P085",
+          "price": 30000,
+          "discount": 0,
+          "total": 30000,
+          "voucher": null,
+          "promoId": null,
+          "device": "",
+          "notes": "",
+          "orderedAt": 1795607271307,
+          "staff": "459919983204630530",
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI5204799353033605405300005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A01110362163049FF8",
+          "issuedAt": 1795607282437,
+          "expiresAt": 1795609082437,
+          "invoiceMessage": "1575115870563209229",
+          "paidAt": 1795607323466,
+          "paidBy": "459919983204630530",
+          "invoiceInvalidated": true,
+          "doneAt": 1795607333984,
+          "doneBy": "459919983204630530",
+          "rating": 5,
+          "review": "GG GEMINK",
+          "closedAt": 1795607399176
+        },
+        "ORV-00006": {
+          "id": "ORV-00006",
+          "type": "purchase",
+          "owner": "903081591943860265",
+          "channel": "1575126305043783720",
+          "status": "completed",
+          "createdAt": 1795609775803,
+          "details": {},
+          "control": "1575126316670263377",
+          "product": "Netflix",
+          "variant": "1 Profile 1 User Strong Account",
+          "duration": "1 Day",
+          "amount": 5000,
+          "sku": "P001",
+          "price": 5000,
+          "discount": 0,
+          "total": 5000,
+          "voucher": null,
+          "promoId": null,
+          "device": "HIHUUU",
+          "notes": "",
+          "orderedAt": 1795609797458,
+          "staff": "459919983204630530",
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI520479935303360540450005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A0111036216304658B",
+          "issuedAt": 1795609824974,
+          "expiresAt": 1795611624974,
+          "invoiceMessage": "1575126526624661534",
+          "paidAt": 1795609852944,
+          "paidBy": "459919983204630530",
+          "invoiceInvalidated": true,
+          "doneAt": 1795609866206,
+          "doneBy": "459919983204630530",
+          "rating": 5,
+          "review": "fast respon. loginnya gampang banget",
+          "closedAt": 1795609973327
+        },
+        "ORV-00007": {
+          "id": "ORV-00007",
+          "type": "purchase",
+          "owner": "859067309867794442",
+          "channel": "1575131262354722868",
+          "status": "cancelled",
+          "createdAt": 1795610957756,
+          "details": {},
+          "control": "1575131274451091598",
+          "cancelledAt": 1795611009228,
+          "closedAt": 1795611014685
+        },
+        "ORV-00008": {
+          "id": "ORV-00008",
+          "type": "purchase",
+          "owner": "859067309867794442",
+          "channel": "1575131642777837579",
+          "status": "completed",
+          "createdAt": 1795611048365,
+          "details": {},
+          "control": "1575131654769606667",
+          "product": "Netflix",
+          "variant": "1 Profile 1 User Strong Account",
+          "duration": "1 Month",
+          "amount": 30000,
+          "sku": "P004",
+          "price": 30000,
+          "discount": 0,
+          "total": 30000,
+          "voucher": null,
+          "promoId": null,
+          "device": "Ip13 / bppn",
+          "notes": "",
+          "orderedAt": 1795611072063,
+          "staff": "645225437404069889",
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI5204799353033605405300005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A01110362163049FF8",
+          "issuedAt": 1795611081507,
+          "expiresAt": 1795612881507,
+          "invoiceMessage": "1575131796096557196",
+          "paidAt": 1795611113346,
+          "paidBy": "645225437404069889",
+          "invoiceInvalidated": true,
+          "doneAt": 1795611126596,
+          "doneBy": "645225437404069889",
+          "closedAt": 1795611144583
+        },
+        "ORV-00009": {
+          "id": "ORV-00009",
+          "type": "purchase",
+          "owner": "859067309867794442",
+          "channel": "1575132153220571197",
+          "status": "completed",
+          "createdAt": 1795611170189,
+          "details": {},
+          "control": "1575132165941764167",
+          "product": "ChatGPT",
+          "variant": "Sharing Plus",
+          "duration": "1 Month",
+          "amount": 30000,
+          "sku": "P085",
+          "price": 30000,
+          "discount": 0,
+          "total": 30000,
+          "voucher": null,
+          "promoId": null,
+          "device": "ip13/sby",
+          "notes": "",
+          "orderedAt": 1795611207082,
+          "staff": "645225437404069889",
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI5204799353033605405300005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A01110362163049FF8",
+          "issuedAt": 1795611224161,
+          "expiresAt": 1795613024161,
+          "invoiceMessage": "1575132394573398207",
+          "paidAt": 1795611415898,
+          "paidBy": "459919983204630530",
+          "invoiceInvalidated": true,
+          "doneAt": 1795611612828,
+          "doneBy": "645225437404069889",
+          "rating": 5,
+          "review": "Fast banget asikk",
+          "closedAt": 1795611664639
+        }
+      },
+      "promos": [],
+      "counter": 9,
+      "welcomeQueue": {},
+      "backupDay": "2026-11-26"
+    },
+    "wa/data/order-admin-locks.json": {
+      "version": 1,
+      "claims": {},
+      "messages": {}
+    },
+    "wa/data/promotions.json": {
+      "version": 1,
+      "promos": [
+        {
+          "id": "PR-B6E4DC8D",
+          "groupId": null,
+          "creator": "459919983204630530",
+          "prices": [
+            {
+              "sku": "P008",
+              "price": 1000,
+              "original": 25000,
+              "product": "Netflix",
+              "variant": "1 Profile 1 User Basic Account",
+              "duration": "1 Month"
+            }
+          ],
+          "slots": 1,
+          "caption": "prenk",
+          "startAt": 1795597482709,
+          "endsAt": 1795597542709,
+          "closedAt": 1795597557561,
+          "reason": "Waktu habis",
+          "endNotifiedAt": 1795599983688
+        }
+      ]
+    },
+    "wa/data/store-schedule-state.json": {
+      "version": 1,
+      "sent": {
+        "2026-11-25": {
+          "open": {
+            "120363428563686180@g.us": true,
+            "120363434318778222@g.us": true
+          },
+          "closed": {}
+        },
+        "2026-11-26": {
+          "open": {},
+          "closed": {
+            "120363428563686180@g.us": true,
+            "120363434318778222@g.us": true
+          }
+        }
+      }
+    },
+    "wa/data/luckyverse.json": {
+      "version": 1,
+      "players": {
+        "267246437949527@lid": {
+          "id": "267246437949527@lid",
+          "name": "Hany | Netflix 3rb",
+          "balance": 250,
+          "xp": 0,
+          "items": {
+            "stone": 10
+          },
+          "pickaxe": "wooden",
+          "durability": 20,
+          "energy": 20,
+          "energyUpdatedAt": 1795602041256,
+          "lastDaily": null,
+          "area": "stone",
+          "gamesPlayed": 0,
+          "gamesWon": 0,
+          "totalMined": 0,
+          "miningJob": null,
+          "createdAt": "2026-11-25T10:20:41.256Z"
+        }
+      },
+      "vouchers": {}
+    }
+  }
+}

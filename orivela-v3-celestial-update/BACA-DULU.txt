@@ -1,0 +1,12 @@
+ORIVELA V3 — CELESTIAL QRIS + TEXT CONTENT UPDATE
+Untuk V3 Unified Trial, termasuk yang sudah menerima Dependency Fix, Promo Fix atau Text Content Update.
+1. Stop bot, backup data dan konfigurasi secara privat.
+2. Upload ZIP ke root /home/container lalu Extract. Jangan hapus file lama.
+3. Startup Command sementara:
+node orivela-v3-celestial-update/apply.js && npm install --allow-git=all --no-audit --no-fund && node index.js
+4. Start. Cek ORIVELA Celestial Update OK atau sudah terpasang. Jika installer menolak hash, jangan paksa overwrite.
+5. Jalankan /setup di Discord. Channel information lama diarsipkan privat, bukan dihapus.
+6. Setelah berhasil, kembalikan Startup Command:
+npm install --allow-git=all --no-audit --no-fund && node index.js
+7. Uji announcement masing-masing tujuan, promo, QRIS nominal dengan ticket test. Gunakan /invoice untuk kirim ulang invoice Discord aktif; WA .qris #ID (sesuai aturan order).
+QRIS: template baru dipakai oleh WA dan Discord. Payload merchant lama tidak diubah; kode dalam gambar referensi dihapus dan diganti QR invoice yang dibuat oleh bot. Cek merchant, nominal, izin penerbit sebelum menerima pembayaran. Invoice 30 menit tidak menonaktifkan QR di jaringan pembayaran. Konfirmasi manual. Tidak mengubah .env, data, sesi, package.json, atau jadwal.

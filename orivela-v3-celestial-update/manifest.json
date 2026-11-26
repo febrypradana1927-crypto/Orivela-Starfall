@@ -1,0 +1,80 @@
+[
+  {
+    "path": "shared.js",
+    "old": [
+      "2e301aee42ef78f3fcc3aea093f3d95754f8bd4696b3d6f1ea1ff66e782635f5"
+    ],
+    "new": "e7d9cbc0cf403a3fe4fdeba007f1625023a2b250f7d7bda77fd3e4097d98fd20"
+  },
+  {
+    "path": "discord/index.js",
+    "old": [
+      "87a29fd1fa20beedcd4315139ec916fdbdb8b023ab2e92619d232256d991d9d4"
+    ],
+    "new": "be8a054e71c50ebc7610953614e2b127a06a28ac1d9bef2c79907941c63378bb"
+  },
+  {
+    "path": "discord/lib/layout.js",
+    "old": [
+      "105ab4db7dff1efb628cad2f88bb6e87fc1f1a75e7e8746fc723b626b02e703f"
+    ],
+    "new": "a0fbc6254828fbf6c59b1ba309bb3f6170e92b28b611c96ab50b237bc7907bd4"
+  },
+  {
+    "path": "discord/lib/text-posts.js",
+    "old": [
+      null
+    ],
+    "new": "29fc777a01578e42a4775aeca5772e21b15f039e9837a9926ba26c3a61696d31"
+  },
+  {
+    "path": "wa/orivela-main-fixed.js",
+    "old": [
+      "98dd62050068a711c3739e12a817cbf6a2ec17c53d4c12e3eeac6d16510d9b02"
+    ],
+    "new": "817d21ac226cc1c6d6dd4cf572e9efeeebee65bafa038bc21f91f8e2f4d45326"
+  },
+  {
+    "path": "wa/announcement-system.js",
+    "old": [
+      "12020e24b01182446bd1b92f2fd3d721601e1117d27ac98dd588bfc7cc2b6fe3"
+    ],
+    "new": "af081f1ffb8c0744bf41a7dcf5bca85a627a01675b7d284945f7062487a65839"
+  },
+  {
+    "path": "wa/promo-system.js",
+    "old": [
+      "7aa5019b8da1e23f2fda8bb6b52ac29e06dad64180ee3ad2752f509c3f8d31a9",
+      "9b5ef1bb400b6ad546572c6f3a6d3007ed8efb573087666ec3eae58a270b2416"
+    ],
+    "new": "bb9c2a1cb82d87b5bf1378d760f52f8632330123e1105daa735442c86da5e049"
+  },
+  {
+    "path": "tests.js",
+    "old": [
+      "e644ce37d62509f8258621fb7c6c70f9a79f79289ca139cd55aa963b35969ba4"
+    ],
+    "new": "deb2d8d9ca477563d853afe4e9cdd2a13580656ad1b53aa8629a17a86a1f5eda"
+  },
+  {
+    "path": "discord/lib/qris-invoice.js",
+    "old": [
+      "3ea3bd37782ab268e2c7f6e2b0465e562572c430b7b59e07b07ee212d20133c2"
+    ],
+    "new": "f7dfb2153268cafd77c8d32cdb991e67ce9bc3f7bce674e2ef4a9903d5507209"
+  },
+  {
+    "path": "discord/assets/qr-celestial.png",
+    "old": [
+      null
+    ],
+    "new": "5e081eb6777d35a27e64e4ead40010d5d4d6e65b9e93b06e4cc67f0f45371111"
+  },
+  {
+    "path": "discord/tests.js",
+    "old": [
+      "fd30b1952f1e80a2821c503805e64c091afd8e4f435cb5ec199dcf5e7182876f"
+    ],
+    "new": "16d9a838fd1875f137152c351375269d9eb1b17ce8b4ab0e08de7f8f67b84128"
+  }
+]
