@@ -1,0 +1,58 @@
+[
+  {
+    "path": "index.js",
+    "old": [
+      "86e74b36c5736c2bf6310e255100919c41054daa3ca21e5a640e89b1b5faf4cf"
+    ],
+    "new": "9fd75f136fb93038d841acaf3ea560e56ba024baff959a18a43e774b9d6bc27a"
+  },
+  {
+    "path": "shared.js",
+    "old": [
+      "423eb98690aa179422ede0f0d5d180c95eb11a05decae3d95e15e362b83fb544"
+    ],
+    "new": "c6d7dee5b6b587944bd1b15211e256b8199b979fab25c114edd2c375a2b1c678"
+  },
+  {
+    "path": "discord/index.js",
+    "old": [
+      "a6616796e2580be9f56c0eb03e889ab8ffc731d1aa4619d9e1168c64ccbad9bd"
+    ],
+    "new": "d9717a88f595aa93a5e50c4d9a6e196e990fa5203eee2f9aa003baa9d22f5cca"
+  },
+  {
+    "path": "wa/orivela-main-fixed.js",
+    "old": [
+      "6bee90a608ccb6ae0e55c820c0425b99e474e9aa96f68492a80198ec257aa5c2"
+    ],
+    "new": "684cd7da1e5268d0e8c8179ee9a7fa46a52fedf6972ce248c56ab41630ba68d1"
+  },
+  {
+    "path": "wa/luckyverse-game.js",
+    "old": [
+      "05daee56ee82ffc65072103be0405b823c0bd1a2060804d4808c0e204e3f19b6"
+    ],
+    "new": "feb0e84a615fa4974b3511fb5a79d38019c84a92069315b9d3bfde8d9f71395b"
+  },
+  {
+    "path": "discord/luckyverse-commands.js",
+    "old": [
+      null
+    ],
+    "new": "57ba51919c2d9ba02fc1007077bb33491ba4aeac7d88b953d46840091a7a794b"
+  },
+  {
+    "path": "discord/luckyverse-bot.js",
+    "old": [
+      null
+    ],
+    "new": "13fd19813210bc0b27b4cc1562b068422686cda34afa5239e64d674485b4dbc7"
+  },
+  {
+    "path": "luckyverse-tests.js",
+    "old": [
+      null
+    ],
+    "new": "1201321217d181cc9f6070fca0b1e8bccc3c672ba315a3a899536cec4b43ec37"
+  }
+]

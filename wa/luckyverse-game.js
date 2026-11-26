@@ -42,10 +42,10 @@ const ITEM_ALIASES = {
 
 const PICKAXES = {
   wooden: { name: 'Wooden Pickaxe', tier: 1, maxDurability: 20, price: 0, requires: {} },
-  stone:  { name: 'Stone Pickaxe', tier: 2, maxDurability: 40, price: 1000, requires: { stone: 100 } },
-  iron:   { name: 'Iron Pickaxe', tier: 3, maxDurability: 80, price: 5000, requires: { coal: 30, copper: 25 } },
-  gold:   { name: 'Gold Pickaxe', tier: 4, maxDurability: 150, price: 15000, requires: { iron: 30, silver: 20 } },
-  crystal:{ name: 'Crystal Pickaxe', tier: 5, maxDurability: 300, price: 50000, requires: { gold: 25, ruby: 15 } }
+  stone:  { name: 'Stone Pickaxe', tier: 2, maxDurability: 40, price: 50000, requires: { stone: 5000 } },
+  iron:   { name: 'Iron Pickaxe', tier: 3, maxDurability: 80, price: 250000, requires: { coal: 4000, copper: 2500 } },
+  gold:   { name: 'Gold Pickaxe', tier: 4, maxDurability: 150, price: 1000000, requires: { iron: 2500, silver: 1500 } },
+  crystal:{ name: 'Crystal Pickaxe', tier: 5, maxDurability: 300, price: 3000000, requires: { gold: 1500, ruby: 600 } }
 };
 const PICKAXE_ORDER = ['wooden', 'stone', 'iron', 'gold', 'crystal'];
 
@@ -185,7 +185,7 @@ class LuckyverseGame {
   getPlayer(userId, displayName) {
     const rawId = String(userId || '').trim();
     const id = Object.hasOwn(this.data.players, rawId) ? rawId : rawId.replace(/:\d+@/, '@');
-    if (!id) throw new Error('ID pemain WhatsApp tidak tersedia.');
+    if (!id) throw new Error('ID pemain tidak tersedia.');
     let player = this.data.players[id];
     if (!player) {
       const now = Date.now();
@@ -610,7 +610,7 @@ Saldo kamu: ${fmt(player.balance)} koin.`
         return 'Jumlah koin harus bilangan bulat positif. Contoh: .give @628123456789 100.';
       }
 
-      const matches = this.findPlayersByIdentifier(recipientToken);
+      const matches = context.platform === 'dc' ? [this.data.players[recipientToken]].filter(Boolean) : this.findPlayersByIdentifier(recipientToken).filter(p=>!String(p.id).startsWith('dc-'));
       if (matches.length === 0) {
         return 'Penerima belum ditemukan. Pastikan dia sudah pernah memakai game Luckyverse dan gunakan nomor yang terdaftar.';
       }
@@ -706,6 +706,7 @@ Saldo kamu: ${fmt(player.balance)} koin.`
 
     if (cmd === 'leaderboard' || cmd === 'rank') {
       const entries = Object.values(this.data.players)
+        .filter(p=>context.platform==='dc' ? (String(p.id).startsWith('dc-')||context.linkedIds?.includes(p.id)) : !String(p.id).startsWith('dc-'))
         .sort((a, b) => levelInfo(b.xp).level - levelInfo(a.xp).level || b.xp - a.xp || b.balance - a.balance)
         .slice(0, 10);
       if (!entries.length) return 'Belum ada pemain. Ketik .games untuk memulai!';
@@ -784,7 +785,7 @@ Saldo kamu: ${fmt(player.balance)} koin.`
       }
       if (player.energy <= 0) {
         this.save();
-        return '😮‍💨 Energi habis. Tunggu pemulihan energi atau klaim .daily.';
+        return '😮💨 Energi habis. Tunggu pemulihan energi atau klaim .daily.';
       }
       if (player.durability <= 0) {
         return `⛏️ Pickaxe rusak! Ketik .repair untuk memperbaikinya. Biaya perbaikan: ${20 + tool.tier * 10} koin.`;

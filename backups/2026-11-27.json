@@ -1,0 +1,714 @@
+{
+  "version": 1,
+  "createdAt": "2026-11-26T17:18:41.631Z",
+  "files": {
+    "shared-data/state.json": {
+      "version": 1,
+      "schedule": {
+        "mode": "auto",
+        "open": "10:00",
+        "close": "00:00"
+      },
+      "links": {
+        "459919983204630530": "267246437949527@lid"
+      },
+      "codes": {},
+      "outbox": []
+    },
+    "discord/data/runtime/store.json": {
+      "version": 1,
+      "guildId": "1575061075534282815",
+      "schedule": {
+        "mode": "auto",
+        "open": "10:00",
+        "close": "00:00"
+      },
+      "channels": {
+        "cat_start": "1575070817790861332",
+        "cat_store": "1575070819611312219",
+        "cat_care": "1575070821465071616",
+        "cat_lucky": "1575070822878547980",
+        "cat_purchase": "1575070824988414026",
+        "cat_warranty": "1575070827370647582",
+        "cat_support": "1575070829556011050",
+        "cat_staff": "1575070831485390888",
+        "cat_archive": "1575070836686065775",
+        "welcome": "1575070839169093692",
+        "rules": "1575070841115254787",
+        "announcement": "1575070845292773426",
+        "status": "1575070847335534706",
+        "prices": "1575070850023948370",
+        "promo": "1575070852238811216",
+        "purchase": "1575070854088491058",
+        "testimonials": "1575070856131125269",
+        "terms": "1575070858458697731",
+        "warranty": "1575070860832673864",
+        "support": "1575070863265632277",
+        "games": "1575070865387819018",
+        "gameinfo": "1575070867212337152",
+        "orders": "1575070869372407818",
+        "complaints": "1575070872434380830",
+        "supportlog": "1575070876368371757",
+        "transactions": "1575070878692147283",
+        "transcripts": "1575070880772522016",
+        "sales": "1575070882794184704",
+        "botlog": "1575070886707339304",
+        "studio": "1575070888519540968",
+        "cat_waorders": "1575438464814686343"
+      },
+      "roles": {
+        "admin": "1575070801441325128",
+        "purchase": "1575070804272484393",
+        "warranty": "1575070805987954688",
+        "support": "1575070807376396369",
+        "customer": "1575070812258705408",
+        "member": "1575070814141685881",
+        "content": "1575070815962275861"
+      },
+      "panels": {
+        "status": "1575070892084428903",
+        "purchase": "1575070899793694847",
+        "warranty": "1575070908815777792",
+        "support": "1575070919704182844",
+        "prices": "1575070926821793793",
+        "rules": "1575070936112042126",
+        "terms": "1575070941661241428",
+        "gameinfo": "1575070959491092560",
+        "promo": "1575070976117440582",
+        "studio": "1575070979015708686"
+      },
+      "tickets": {
+        "ORV-00001": {
+          "id": "ORV-00001",
+          "type": "purchase",
+          "owner": "645225437404069889",
+          "channel": "1575072116645175296",
+          "status": "cancelled",
+          "createdAt": 1795596856243,
+          "details": {},
+          "control": "1575072127835574313",
+          "product": "ChatGPT",
+          "variant": "Sharing Plus",
+          "duration": "1 Month",
+          "amount": 30000,
+          "sku": "P085",
+          "price": 30000,
+          "discount": 0,
+          "total": 30000,
+          "voucher": null,
+          "promoId": null,
+          "device": "Helios / Surakarta",
+          "notes": "",
+          "orderedAt": 1795596922268,
+          "staff": "459919983204630530",
+          "cancelledAt": 1795596941775,
+          "closedAt": 1795597079828
+        },
+        "ORV-00002": {
+          "id": "ORV-00002",
+          "type": "support",
+          "owner": "645225437404069889",
+          "channel": "1575072829295034388",
+          "status": "resolved",
+          "createdAt": 1795597026249,
+          "details": {
+            "Kendala": "Halo sayang"
+          },
+          "control": "1575072839873077381",
+          "staff": "459919983204630530",
+          "doneAt": 1795597062184,
+          "closedAt": 1795597093024
+        },
+        "ORV-00003": {
+          "id": "ORV-00003",
+          "type": "support",
+          "owner": "645225437404069889",
+          "channel": "1575073116126838824",
+          "status": "resolved",
+          "createdAt": 1795597094575,
+          "details": {
+            "Kendala": "Haloooo aku sayang banget sama kamuuuuuuuuuuuuuuuu"
+          },
+          "control": "1575073126629515395",
+          "staff": "459919983204630530",
+          "doneAt": 1795597207897,
+          "closedAt": 1795597215613
+        },
+        "ORV-00004": {
+          "id": "ORV-00004",
+          "type": "purchase",
+          "owner": "645225437404069889",
+          "channel": "1575074875985502228",
+          "status": "cancelled",
+          "createdAt": 1795597514132,
+          "details": {},
+          "control": "1575074887876350136",
+          "cancelledAt": 1795597534352,
+          "closedAt": 1795597539797
+        },
+        "ORV-00005": {
+          "id": "ORV-00005",
+          "type": "purchase",
+          "owner": "903081591943860265",
+          "channel": "1575115600986902708",
+          "status": "completed",
+          "createdAt": 1795607223754,
+          "details": {},
+          "control": "1575115611414200465",
+          "product": "ChatGPT",
+          "variant": "Sharing Plus",
+          "duration": "1 Month",
+          "amount": 30000,
+          "sku": "P085",
+          "price": 30000,
+          "discount": 0,
+          "total": 30000,
+          "voucher": null,
+          "promoId": null,
+          "device": "",
+          "notes": "",
+          "orderedAt": 1795607271307,
+          "staff": "459919983204630530",
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI5204799353033605405300005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A01110362163049FF8",
+          "issuedAt": 1795607282437,
+          "expiresAt": 1795609082437,
+          "invoiceMessage": "1575115870563209229",
+          "paidAt": 1795607323466,
+          "paidBy": "459919983204630530",
+          "invoiceInvalidated": true,
+          "doneAt": 1795607333984,
+          "doneBy": "459919983204630530",
+          "rating": 5,
+          "review": "GG GEMINK",
+          "closedAt": 1795607399176
+        },
+        "ORV-00006": {
+          "id": "ORV-00006",
+          "type": "purchase",
+          "owner": "903081591943860265",
+          "channel": "1575126305043783720",
+          "status": "completed",
+          "createdAt": 1795609775803,
+          "details": {},
+          "control": "1575126316670263377",
+          "product": "Netflix",
+          "variant": "1 Profile 1 User Strong Account",
+          "duration": "1 Day",
+          "amount": 5000,
+          "sku": "P001",
+          "price": 5000,
+          "discount": 0,
+          "total": 5000,
+          "voucher": null,
+          "promoId": null,
+          "device": "HIHUUU",
+          "notes": "",
+          "orderedAt": 1795609797458,
+          "staff": "459919983204630530",
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI520479935303360540450005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A0111036216304658B",
+          "issuedAt": 1795609824974,
+          "expiresAt": 1795611624974,
+          "invoiceMessage": "1575126526624661534",
+          "paidAt": 1795609852944,
+          "paidBy": "459919983204630530",
+          "invoiceInvalidated": true,
+          "doneAt": 1795609866206,
+          "doneBy": "459919983204630530",
+          "rating": 5,
+          "review": "fast respon. loginnya gampang banget",
+          "closedAt": 1795609973327
+        },
+        "ORV-00007": {
+          "id": "ORV-00007",
+          "type": "purchase",
+          "owner": "859067309867794442",
+          "channel": "1575131262354722868",
+          "status": "cancelled",
+          "createdAt": 1795610957756,
+          "details": {},
+          "control": "1575131274451091598",
+          "cancelledAt": 1795611009228,
+          "closedAt": 1795611014685
+        },
+        "ORV-00008": {
+          "id": "ORV-00008",
+          "type": "purchase",
+          "owner": "859067309867794442",
+          "channel": "1575131642777837579",
+          "status": "completed",
+          "createdAt": 1795611048365,
+          "details": {},
+          "control": "1575131654769606667",
+          "product": "Netflix",
+          "variant": "1 Profile 1 User Strong Account",
+          "duration": "1 Month",
+          "amount": 30000,
+          "sku": "P004",
+          "price": 30000,
+          "discount": 0,
+          "total": 30000,
+          "voucher": null,
+          "promoId": null,
+          "device": "Ip13 / bppn",
+          "notes": "",
+          "orderedAt": 1795611072063,
+          "staff": "645225437404069889",
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI5204799353033605405300005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A01110362163049FF8",
+          "issuedAt": 1795611081507,
+          "expiresAt": 1795612881507,
+          "invoiceMessage": "1575131796096557196",
+          "paidAt": 1795611113346,
+          "paidBy": "645225437404069889",
+          "invoiceInvalidated": true,
+          "doneAt": 1795611126596,
+          "doneBy": "645225437404069889",
+          "closedAt": 1795611144583
+        },
+        "ORV-00009": {
+          "id": "ORV-00009",
+          "type": "purchase",
+          "owner": "859067309867794442",
+          "channel": "1575132153220571197",
+          "status": "completed",
+          "createdAt": 1795611170189,
+          "details": {},
+          "control": "1575132165941764167",
+          "product": "ChatGPT",
+          "variant": "Sharing Plus",
+          "duration": "1 Month",
+          "amount": 30000,
+          "sku": "P085",
+          "price": 30000,
+          "discount": 0,
+          "total": 30000,
+          "voucher": null,
+          "promoId": null,
+          "device": "ip13/sby",
+          "notes": "",
+          "orderedAt": 1795611207082,
+          "staff": "645225437404069889",
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI5204799353033605405300005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A01110362163049FF8",
+          "issuedAt": 1795611224161,
+          "expiresAt": 1795613024161,
+          "invoiceMessage": "1575132394573398207",
+          "paidAt": 1795611415898,
+          "paidBy": "459919983204630530",
+          "invoiceInvalidated": true,
+          "doneAt": 1795611612828,
+          "doneBy": "645225437404069889",
+          "rating": 5,
+          "review": "Fast banget asikk",
+          "closedAt": 1795611664639
+        },
+        "ORV-00010": {
+          "id": "ORV-00010",
+          "type": "warranty",
+          "owner": "859067309867794442",
+          "channel": "1575340759027032074",
+          "status": "resolved",
+          "createdAt": 1795660905616,
+          "details": {
+            "Order ID": "001",
+            "Produk": "netflix",
+            "Tanggal": "25/11/26",
+            "Kendala": "saya mengalami kendala sakit pinggang"
+          },
+          "control": "1575340770360037499",
+          "staff": "645225437404069889",
+          "doneAt": 1795662361228,
+          "closedAt": 1795662367931
+        },
+        "ORV-00011": {
+          "id": "ORV-00011",
+          "type": "purchase",
+          "owner": "859067309867794442",
+          "channel": "1575347599366692904",
+          "status": "completed",
+          "createdAt": 1795662536429,
+          "details": {},
+          "control": "1575347611400011897",
+          "product": "Alight Motion",
+          "variant": "Sharing",
+          "duration": "1 Year",
+          "amount": 5000,
+          "sku": "P106",
+          "price": 5000,
+          "discount": 0,
+          "total": 5000,
+          "voucher": null,
+          "promoId": null,
+          "device": "testing",
+          "notes": "",
+          "orderedAt": 1795662588780,
+          "staff": "459919983204630530",
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI520479935303360540450005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A0111036216304658B",
+          "issuedAt": 1795662760099,
+          "expiresAt": 1795664560099,
+          "invoiceMessage": "1575348559857983559",
+          "invoiceInvalidated": true,
+          "paidAt": 1795664630554,
+          "paidBy": "645225437404069889",
+          "doneAt": 1795664644007,
+          "doneBy": "459919983204630530",
+          "closedAt": 1795664668487
+        }
+      },
+      "promos": [],
+      "counter": 11,
+      "welcomeQueue": {},
+      "backupDay": "2026-11-27",
+      "waRooms": {
+        "ORV-575AF0DED966": {
+          "channel": "1575448990798053496",
+          "panel": "1575448992630964327",
+          "sig": "{\"embeds\":[{\"color\":12034275,\"title\":\"✦ WhatsApp Order · ORV-575AF0DED966\",\"description\":\"**Status:** DONE\\n**Staff:** Hany | Netflix 3rb\\n**Total:** Rp30.000\\n**Data akun:** Terkirim privat\\n✦ NEW ORDER | ORIVELA STARFALL ✦\\nID: #ORV-575AF0DED966\\nNama / Username: Merc\\nNomor WA buyer: +6288221011620\\nProduk (isian buyer): ChatGPT\\nVarian / Tipe: Plus\\nDurasi: 1 bulan\\nDevice/Lokasi: ip11 / surabaya\\nVoucher: -\\nDiskon voucher: Rp0\\nPaket terkunci: P085 | ChatGPT | Sharing Plus | 1 Month\\nTotal tagihan: Rp30.000\\nKirim ulang: .qris #ORV-575AF0DED966\\nVerifikasi setelah dana masuk: .paid #ORV-575AF0DED966 30000\\nSetelah pesanan selesai: .d #ORV-575AF0DED966\",\"footer\":{\"text\":\"ORIVELA Starfall · your digital space ☾\"}}],\"components\":[{\"type\":1,\"components\":[{\"type\":2,\"custom_id\":\"waorder:ambil\",\"label\":\"Ambil / Pilih SKU\",\"style\":1,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:qris\",\"label\":\"Kirim Ulang QRIS\",\"style\":2,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:paid\",\"label\":\"Verifikasi Bayar\",\"style\":3,\"disabled\":true}]},{\"type\":1,\"components\":[{\"type\":2,\"custom_id\":\"waorder:reply\",\"label\":\"Balas ke Grup WA\",\"style\":1,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:send\",\"label\":\"Kirim Akun Privat\",\"style\":3,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:d\",\"label\":\"Selesaikan\",\"style\":3,\"disabled\":true}]},{\"type\":1,\"components\":[{\"type\":2,\"custom_id\":\"waorder:cancel\",\"label\":\"Batalkan\",\"style\":4,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:lepas\",\"label\":\"Lepas Staff\",\"style\":2,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:archive\",\"label\":\"Arsipkan\",\"style\":2,\"disabled\":false}]}],\"allowedMentions\":{\"parse\":[]}}"
+        },
+        "ORV-68307415C295": {
+          "channel": "1575472822220886179",
+          "panel": "1575472832740196483",
+          "sig": "{\"embeds\":[{\"color\":12034275,\"title\":\"✦ WhatsApp Order · ORV-68307415C295\",\"description\":\"**Status:** DONE\\n**Staff:** Merc | Netflix 3K\\n**Total:** Rp10.000\\n**Data akun:** Terkirim privat\\n✦ NEW ORDER | ORIVELA STARFALL ✦\\nID: #ORV-68307415C295\\nNama / Username: erni\\nNomor WA buyer: +6281347115912\\nProduk (isian buyer): prime\\nVarian / Tipe: sharing\\nDurasi: 1bln\\nDevice/Lokasi: smart tv\\nVoucher: -\\nDiskon voucher: Rp0\\nPaket terkunci: P071 | Amazon / Prime | Sharing 3 Users | 1 Month\\nTotal tagihan: Rp10.000\\nKirim ulang: .qris #ORV-68307415C295\\nVerifikasi setelah dana masuk: .paid #ORV-68307415C295 10000\\nSetelah pesanan selesai: .d #ORV-68307415C295\",\"footer\":{\"text\":\"ORIVELA Starfall · your digital space ☾\"}}],\"components\":[{\"type\":1,\"components\":[{\"type\":2,\"custom_id\":\"waorder:ambil\",\"label\":\"Ambil / Pilih SKU\",\"style\":1,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:qris\",\"label\":\"Kirim Ulang QRIS\",\"style\":2,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:paid\",\"label\":\"Verifikasi Bayar\",\"style\":3,\"disabled\":true}]},{\"type\":1,\"components\":[{\"type\":2,\"custom_id\":\"waorder:reply\",\"label\":\"Balas ke Grup WA\",\"style\":1,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:send\",\"label\":\"Kirim Akun Privat\",\"style\":3,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:d\",\"label\":\"Selesaikan\",\"style\":3,\"disabled\":true}]},{\"type\":1,\"components\":[{\"type\":2,\"custom_id\":\"waorder:cancel\",\"label\":\"Batalkan\",\"style\":4,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:lepas\",\"label\":\"Lepas Staff\",\"style\":2,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:archive\",\"label\":\"Arsipkan\",\"style\":2,\"disabled\":false}]}],\"allowedMentions\":{\"parse\":[]}}",
+          "archived": true
+        },
+        "ORV-522E9A13C54C": {
+          "channel": "1575523214048763994",
+          "panel": "1575523216682647593",
+          "sig": "{\"embeds\":[{\"color\":12034275,\"title\":\"✦ WhatsApp Order · ORV-522E9A13C54C\",\"description\":\"**Status:** DONE\\n**Staff:** Hany | Netflix 3rb\\n**Total:** Rp10.000\\n**Data akun:** Terkirim privat\\n✦ NEW ORDER | ORIVELA STARFALL ✦\\nID: #ORV-522E9A13C54C\\nNama / Username: bodat\\nNomor WA buyer: +6285859366693\\nProduk (isian buyer): Gemini\\nVarian / Tipe: P102\\nDurasi: 1 bulan\\nDevice/Lokasi: laptop/sda\\nVoucher: -\\nDiskon voucher: Rp0\\nPaket terkunci: P102 | Gemini | Private | 1 Month\\nTotal tagihan: Rp10.000\\nKirim ulang: .qris #ORV-522E9A13C54C\\nVerifikasi setelah dana masuk: .paid #ORV-522E9A13C54C 10000\\nSetelah pesanan selesai: .d #ORV-522E9A13C54C\",\"footer\":{\"text\":\"ORIVELA Starfall · your digital space ☾\"}}],\"components\":[{\"type\":1,\"components\":[{\"type\":2,\"custom_id\":\"waorder:ambil\",\"label\":\"Ambil / Pilih SKU\",\"style\":1,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:qris\",\"label\":\"Kirim Ulang QRIS\",\"style\":2,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:paid\",\"label\":\"Verifikasi Bayar\",\"style\":3,\"disabled\":true}]},{\"type\":1,\"components\":[{\"type\":2,\"custom_id\":\"waorder:reply\",\"label\":\"Balas ke Grup WA\",\"style\":1,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:send\",\"label\":\"Kirim Akun Privat\",\"style\":3,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:d\",\"label\":\"Selesaikan\",\"style\":3,\"disabled\":true}]},{\"type\":1,\"components\":[{\"type\":2,\"custom_id\":\"waorder:cancel\",\"label\":\"Batalkan\",\"style\":4,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:lepas\",\"label\":\"Lepas Staff\",\"style\":2,\"disabled\":true},{\"type\":2,\"custom_id\":\"waorder:archive\",\"label\":\"Arsipkan\",\"style\":2,\"disabled\":false}]}],\"allowedMentions\":{\"parse\":[]}}",
+          "archived": true
+        }
+      }
+    },
+    "wa/data/orders.json": {
+      "version": 1,
+      "orders": [
+        {
+          "sourceKey": "120363428563686180@g.us|2A5D0AEF5E8522EC093D|167138836902075@lid",
+          "groupId": "120363428563686180@g.us",
+          "buyerJid": "167138836902075@lid",
+          "buyerAccountId": "6288221011620@s.whatsapp.net",
+          "buyerPhone": "+6288221011620",
+          "buyerPhoneSource": "WhatsApp",
+          "name": "Merc",
+          "product": "ChatGPT",
+          "variant": "Sharing Plus",
+          "duration": "1 Month",
+          "device": "ip11 / surabaya",
+          "requestedPackage": {
+            "product": "ChatGPT",
+            "variant": "Plus",
+            "duration": "1 bulan"
+          },
+          "adminSelectRequired": true,
+          "sku": "P085",
+          "originalPrice": 30000,
+          "discount": 0,
+          "total": 30000,
+          "voucher": null,
+          "quote": {
+            "key": {
+              "remoteJid": "120363428563686180@g.us",
+              "id": "2A5D0AEF5E8522EC093D",
+              "participant": "167138836902075@lid",
+              "fromMe": false
+            },
+            "message": {
+              "conversation": "✦ FORMAT ORDER ORIVELA ♡\nNama / Username : Merc\nProduk : ChatGPT\nVarian / Tipe : Plus\nDurasi : 1 bulan\nDevice/Lokasi : ip11 / surabaya\nVoucher : -\n\nSalin dan isi form ini. Lihat .harga NamaProduk untuk daftar paket. Admin akan mengonfirmasi paket sebelum QRIS dikirim. Satu form untuk satu item. Voucher opsional; isi - bila tidak punya. Jangan kirim password/OTP."
+            }
+          },
+          "id": "ORV-575AF0DED966",
+          "createdAt": "2026-11-26T09:51:46.701Z",
+          "status": "DONE",
+          "amount": 30000,
+          "waReplyIds": [
+            "3EB02A2C6558F679AD1E0C",
+            "3EB0343B65D488F641374D"
+          ],
+          "adminNotifiedAt": "2026-11-26T09:51:47.316Z",
+          "packageConfirmedAt": "2026-11-26T09:53:07.709Z",
+          "paymentExpiresAt": "2026-11-26T10:23:07.711Z",
+          "invoiceSentAt": "2026-11-26T09:53:10.389Z",
+          "paidAt": "2026-11-26T09:54:34.695Z",
+          "processingRequestedAt": "2026-11-26T09:54:34.695Z",
+          "processingNotifiedAt": "2026-11-26T09:54:35.001Z",
+          "deliveryAttemptAt": "2026-11-26T09:55:52.968Z",
+          "deliverySentAt": "2026-11-26T09:55:53.581Z",
+          "doneAt": "2026-11-26T09:56:14.161Z",
+          "doneNotifiedAt": "2026-11-26T09:56:14.693Z"
+        },
+        {
+          "sourceKey": "120363428563686180@g.us|AC71174932CCAA85A623E826BFB9995D|42219646009453@lid",
+          "groupId": "120363428563686180@g.us",
+          "buyerJid": "42219646009453@lid",
+          "buyerAccountId": "6281347115912@s.whatsapp.net",
+          "buyerPhone": "+6281347115912",
+          "buyerPhoneSource": "WhatsApp",
+          "name": "erni",
+          "product": "Amazon / Prime",
+          "variant": "Sharing 3 Users",
+          "duration": "1 Month",
+          "device": "smart tv",
+          "requestedPackage": {
+            "product": "prime",
+            "variant": "sharing",
+            "duration": "1bln"
+          },
+          "adminSelectRequired": true,
+          "sku": "P071",
+          "originalPrice": 10000,
+          "discount": 0,
+          "total": 10000,
+          "voucher": null,
+          "quote": {
+            "key": {
+              "remoteJid": "120363428563686180@g.us",
+              "id": "AC71174932CCAA85A623E826BFB9995D",
+              "participant": "42219646009453@lid",
+              "fromMe": false
+            },
+            "message": {
+              "conversation": "✦ FORMAT ORDER ORIVELA ♡\nNama / Username : erni\nProduk : prime\nVarian / Tipe : sharing\nDurasi :1bln\nDevice/Lokasi :smart tv\nVoucher : -\n\nSalin dan isi form ini. Lihat .harga NamaProduk untuk daftar paket. Admin akan mengonfirmasi paket sebelum QRIS dikirim. Satu form untuk satu item. Voucher opsional; isi - bila tidak punya. Jangan kirim password/OTP."
+            }
+          },
+          "id": "ORV-68307415C295",
+          "createdAt": "2026-11-26T11:26:15.859Z",
+          "status": "DONE",
+          "amount": 10000,
+          "waReplyIds": [
+            "3EB0CBD3E647E27D1BFBCE",
+            "3EB0BF224B907A7706CC92"
+          ],
+          "adminNotifiedAt": "2026-11-26T11:26:16.825Z",
+          "packageConfirmedAt": "2026-11-26T11:32:48.481Z",
+          "paymentExpiresAt": "2026-11-26T12:02:48.484Z",
+          "invoiceSentAt": "2026-11-26T11:32:53.865Z",
+          "paidAt": "2026-11-26T11:35:05.796Z",
+          "processingRequestedAt": "2026-11-26T11:35:05.796Z",
+          "processingNotifiedAt": "2026-11-26T11:35:06.151Z",
+          "deliveryAttemptAt": "2026-11-26T11:50:45.634Z",
+          "deliverySentAt": "2026-11-26T11:50:46.342Z",
+          "doneAt": "2026-11-26T11:53:17.314Z",
+          "doneNotifiedAt": "2026-11-26T11:53:17.937Z"
+        },
+        {
+          "sourceKey": "120363428563686180@g.us|3A132E424AC04F5DA9F0|181531238764635@lid",
+          "groupId": "120363428563686180@g.us",
+          "buyerJid": "181531238764635@lid",
+          "buyerAccountId": "6285859366693@s.whatsapp.net",
+          "buyerPhone": "+6285859366693",
+          "buyerPhoneSource": "WhatsApp",
+          "name": "bodat",
+          "product": "Gemini",
+          "variant": "Private",
+          "duration": "1 Month",
+          "device": "laptop/sda",
+          "requestedPackage": {
+            "product": "Gemini",
+            "variant": "P102",
+            "duration": "1 bulan"
+          },
+          "adminSelectRequired": true,
+          "sku": "P102",
+          "originalPrice": 10000,
+          "discount": 0,
+          "total": 10000,
+          "voucher": null,
+          "quote": {
+            "key": {
+              "remoteJid": "120363428563686180@g.us",
+              "id": "3A132E424AC04F5DA9F0",
+              "participant": "181531238764635@lid",
+              "fromMe": false
+            },
+            "message": {
+              "conversation": "✦ FORMAT ORDER ORIVELA ♡\nNama / Username : bodat\nProduk : Gemini\nVarian / Tipe : P102\nDurasi : 1 bulan\nDevice/Lokasi : laptop/sda\nVoucher : -\n\nSalin dan isi form ini. Lihat .harga NamaProduk untuk daftar paket. Admin akan mengonfirmasi paket sebelum QRIS dikirim. Satu form untuk satu item. Voucher opsional; isi - bila tidak punya. Jangan kirim password/OTP."
+            }
+          },
+          "id": "ORV-522E9A13C54C",
+          "createdAt": "2026-11-26T14:46:40.635Z",
+          "status": "DONE",
+          "amount": 10000,
+          "waReplyIds": [
+            "3EB07E03AD6646C63EE7D6",
+            "3EB0D749DB0D4C71C8D575"
+          ],
+          "adminNotifiedAt": "2026-11-26T14:46:41.904Z",
+          "packageConfirmedAt": "2026-11-26T14:47:58.348Z",
+          "paymentExpiresAt": "2026-11-26T15:17:58.358Z",
+          "invoiceSentAt": "2026-11-26T14:48:27.619Z",
+          "paidAt": "2026-11-26T14:49:37.417Z",
+          "processingRequestedAt": "2026-11-26T14:49:37.417Z",
+          "processingNotifiedAt": "2026-11-26T14:49:37.808Z",
+          "deliveryAttemptAt": "2026-11-26T15:04:44.890Z",
+          "deliverySentAt": "2026-11-26T15:04:45.528Z",
+          "doneAt": "2026-11-26T15:09:27.014Z",
+          "doneNotifiedAt": "2026-11-26T15:09:27.608Z"
+        }
+      ]
+    },
+    "wa/data/order-admin-locks.json": {
+      "version": 1,
+      "claims": {
+        "ORV-575AF0DED966": {
+          "key": "dc:459919983204630530",
+          "ids": [
+            "dc:459919983204630530"
+          ],
+          "name": "Hany | Netflix 3rb",
+          "at": "2026-11-26T09:53:07.709Z"
+        },
+        "ORV-68307415C295": {
+          "key": "dc:645225437404069889",
+          "ids": [
+            "dc:645225437404069889"
+          ],
+          "name": "Merc | Netflix 3K",
+          "at": "2026-11-26T11:32:48.480Z"
+        },
+        "ORV-522E9A13C54C": {
+          "key": "dc:459919983204630530",
+          "ids": [
+            "dc:459919983204630530"
+          ],
+          "name": "Hany | Netflix 3rb",
+          "at": "2026-11-26T14:47:58.346Z"
+        }
+      },
+      "messages": {
+        "120363434318778222@g.us|3EB0B39AD09288ED5C403F": "ORV-575AF0DED966",
+        "120363434318778222@g.us|3EB0048B0CFE5626D045F4": "ORV-68307415C295",
+        "120363434318778222@g.us|3EB0BE913609FC85EE1513": "ORV-522E9A13C54C"
+      }
+    },
+    "wa/data/promotions.json": {
+      "version": 1,
+      "promos": [
+        {
+          "id": "PR-B6E4DC8D",
+          "groupId": null,
+          "creator": "459919983204630530",
+          "prices": [
+            {
+              "sku": "P008",
+              "price": 1000,
+              "original": 25000,
+              "product": "Netflix",
+              "variant": "1 Profile 1 User Basic Account",
+              "duration": "1 Month"
+            }
+          ],
+          "slots": 1,
+          "caption": "prenk",
+          "startAt": 1795597482709,
+          "endsAt": 1795597542709,
+          "closedAt": 1795597557561,
+          "reason": "Waktu habis",
+          "endNotifiedAt": 1795599983688
+        }
+      ]
+    },
+    "wa/data/qris-invoices.json": {
+      "version": 1,
+      "invoices": {
+        "ORV-575AF0DED966": {
+          "id": "ORV-575AF0DED966",
+          "amount": 30000,
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI5204799353033605405300005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A01110362163049FF8",
+          "createdAt": "2026-11-26T09:53:07.711Z"
+        },
+        "ORV-68307415C295": {
+          "id": "ORV-68307415C295",
+          "amount": 10000,
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI5204799353033605405100005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A01110362163044D21",
+          "createdAt": "2026-11-26T11:32:48.484Z"
+        },
+        "ORV-522E9A13C54C": {
+          "id": "ORV-522E9A13C54C",
+          "amount": 10000,
+          "payload": "00020101021226610014COM.GO-JEK.WWW01189360091433937614160210G3937614160303UMI51440014ID.CO.QRIS.WWW0215ID10266216094070303UMI5204799353033605405100005802ID5916Orivela Starfall6010BALIKPAPAN61057612562140703A01110362163044D21",
+          "createdAt": "2026-11-26T14:47:58.358Z"
+        }
+      }
+    },
+    "wa/data/store-schedule-state.json": {
+      "version": 1,
+      "sent": {
+        "2026-11-25": {
+          "open": {
+            "120363428563686180@g.us": true,
+            "120363434318778222@g.us": true
+          },
+          "closed": {}
+        },
+        "2026-11-26": {
+          "open": {
+            "120363428563686180@g.us": true,
+            "120363434318778222@g.us": true
+          },
+          "closed": {
+            "120363428563686180@g.us": true,
+            "120363434318778222@g.us": true
+          }
+        },
+        "2026-11-27": {
+          "open": {},
+          "closed": {
+            "120363428563686180@g.us": true,
+            "120363434318778222@g.us": true
+          }
+        }
+      }
+    },
+    "wa/data/luckyverse.json": {
+      "version": 1,
+      "players": {
+        "267246437949527@lid": {
+          "id": "267246437949527@lid",
+          "name": "Hany | Netflix 3rb",
+          "balance": 110002973,
+          "xp": 10,
+          "items": {
+            "stone": 0,
+            "coal": 0,
+            "copper": 0,
+            "iron": 0,
+            "silver": 0,
+            "gold": 0,
+            "ruby": 0,
+            "diamond": 0
+          },
+          "pickaxe": "wooden",
+          "durability": 19,
+          "energy": 20,
+          "energyUpdatedAt": 1795696958754,
+          "lastDaily": null,
+          "area": "stone",
+          "gamesPlayed": 0,
+          "gamesWon": 0,
+          "totalMined": 1,
+          "miningJob": null,
+          "createdAt": "2026-11-25T10:20:41.256Z"
+        },
+        "dc-903081591943860265": {
+          "id": "dc-903081591943860265",
+          "name": "WhimpsieeSide",
+          "balance": 265,
+          "xp": 25,
+          "items": {
+            "stone": 10
+          },
+          "pickaxe": "wooden",
+          "durability": 20,
+          "energy": 20,
+          "energyUpdatedAt": 1795689394340,
+          "lastDaily": null,
+          "area": "stone",
+          "gamesPlayed": 1,
+          "gamesWon": 1,
+          "totalMined": 0,
+          "miningJob": null,
+          "createdAt": "2026-11-26T10:36:34.340Z"
+        }
+      },
+      "vouchers": {}
+    }
+  }
+}

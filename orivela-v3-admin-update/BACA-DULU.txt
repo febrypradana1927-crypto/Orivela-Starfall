@@ -1,0 +1,20 @@
+ORIVELA STARFALL V3 — ADMIN CONTROL + MEDIA UPDATE
+
+Backup seluruh bot dan data secara privat; Stop KiosPanel. Upload ZIP ke /home/container dan Extract.
+Startup sementara:
+node orivela-v3-admin-update/apply.js && npm install --allow-git=all --no-audit --no-fund && node index.js
+Start; tunggu ORIVELA Admin Control Update OK / sudah terpasang. Jalankan /setup sebagai Administrator Discord.
+Setelah berhasil, gunakan kembali:
+npm install --allow-git=all --no-audit --no-fund && node index.js
+
+Paket berisi kode dan template saja; tidak mengganti .env, config.json, payload merchant, package.json, database, session, katalog. Installer memeriksa hash versi yang dikenal dan backup kode sebelum mengganti. Jika file berbeda, installer menolak perubahan: jangan paksa overwrite; gunakan backup dan kirim detail error (tanpa token).
+
+ANNOUNCEMENT: di Content Studio pilih WA/DC/Both. Isi teks, YES untuk media, NO untuk teks. Setelah YES gunakan /announcementmedia file di channel asal. WA: .notif di grup admin, reply isi teks, lalu YES atau NO. Jika YES, upload satu foto JPG/PNG atau video MP4. Draft 15 menit, hilang jika restart. Teks maks. 900 karakter, dengan media maks. 800; media maks. 8 MiB. Antrean media persisten maksimum 32 MiB base64; backup data dapat ikut memuat media. Promo tetap teks.
+
+ORDER WA: /setup membuat kategori WHATSAPP ORDERS privat (Administrator, Store Admin, Sales Staff). Setiap order WA aktif di Store terkonfigurasi muncul sebagai channel tersendiri. Staff pilih Ambil/Pilih SKU; QRIS sesuai nominal dikirim bot WA ke grup, buyer reply QRIS/konfirmasi atau .pesan #ID pesan, bukti foto dapat dikirim dengan caption .bukti #ID. Hanya pesan buyer asli yang diteruskan. Jika relay gagal, buyer diminta mencoba ulang. Staff Balas ke Grup WA, Verifikasi Bayar setelah cek dana merchant (manual), Kirim Akun Privat lewat modal, Selesaikan, Arsipkan. Akun dikirim hanya ke identitas pengirim asli yang tersimpan; bukan nomor yang diisi pada form. Jangan tulis password/OTP atau data akun di room/group. Data pengiriman tidak disimpan dalam ledger; timestamp disimpan. Jika status pengiriman tidak pasti, cek manual; jangan kirim otomatis lagi. Order yang sudah diklaim admin WA lama tetap terkunci; selesaikan dari WA atau lepas jika belum paid. Admin WA tetap bisa menggunakan fungsi lama. Arsipkan order selesai agar kategori tidak mencapai batas 50 channel Discord; kelola arsip privat secara berkala.
+
+WA_ENABLED=true dan DISCORD_ENABLED=true diperlukan untuk bridge. QRIS_ENABLED=true di .env dan qrisInvoiceEnabled=true, qrisAutoPrice=true di wa/config.json diperlukan untuk order WA QRIS. Grup store WA harus telah dikonfigurasi. Grup admin WA tetap dibutuhkan untuk .notif dan fitur admin WA lainnya, namun tidak wajib untuk penerimaan order baru jika Discord diaktifkan.
+
+QRIS: desain dari gambar terbaru, kode QR gambar asli dibersihkan, renderer memakai payload merchant lama yang sudah tersedia + nominal terkunci. Cek merchant dan nominal sebelum produksi; hanya jika penerbit memperbolehkan metode ini. Expiry 30 menit pada invoice, tidak menonaktifkan QR di jaringan pembayaran. Tidak ada auto verifikasi dana.
+
+HASIL LOKAL: 24/24 tes logika dan simulasi lulus (Node 22), sintaks JS valid, QR dummy Rp15.000 terbaca kembali via OpenCV menggunakan template baru. Dependency Discord/Baileys/renderer tidak tersedia di lingkungan uji; belum diuji koneksi real, upload video real, atau Discord UI real. Uji dengan buyer percobaan sebelum transaksi nyata.

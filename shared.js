@@ -8,10 +8,25 @@ const state=C.load(file,initial());
 const save=()=>C.atomic(file,state);
 const B=module.exports={wa:null,dcSender:null,waSender:null,dcTickets:()=>Object.values(C.load(path.join(__dirname,'discord','data','runtime','store.json'),{tickets:{}}).tickets||{}),schedule:()=>state.schedule,isOpen:()=>C.isOpen(state.schedule),setSchedule(s){C.minutes(s.open);C.minutes(s.close);if(!['auto','open','close','maintenance'].includes(s.mode))throw Error('Mode invalid');state.schedule={...s};save();},state};
 const normalize=id=>String(id).replace(/:\d+@/,'@');
-B.linked=id=>state.links[id]||null;
-B.newCode=id=>{if(B.linked(id))throw Error('Akun Discord sudah terhubung. Hubungi owner untuk pemulihan akun.');for(const [c,v] of Object.entries(state.codes))if(v.exp<=Date.now()||v.id===id)delete state.codes[c];const code=crypto.randomBytes(9).toString('hex').toUpperCase();state.codes[code]={id,exp:Date.now()+10*60000};save();return code;};
-B.acceptLink=(code,jid)=>{const k=String(code||'').toUpperCase(),v=state.codes[k];jid=normalize(jid);if(!v||v.exp<=Date.now()||!/^\d+@(?:s\.whatsapp\.net|lid)$/.test(jid))throw Error('Kode tidak valid/kedaluwarsa. Buat /link lagi.');if(B.linked(v.id)||Object.values(state.links).includes(jid))throw Error('Salah satu akun sudah terhubung. Hubungi owner.');state.links[v.id]=jid;delete state.codes[k];save();return v.id;};
-B.gameId=id=>{const jid=B.linked(id);if(!jid)throw Error('Hubungkan akun WA terlebih dahulu dengan /link (kode dikirim privat).');return jid;};
+// New links and any profile migration live in the SAME atomic game file.
+// Existing V3 links are still read from shared-data/state.json.
+B.links=()=>({...state.links,...(B.wa?.game.data.accountLinks||{})});
+B.linked=id=>B.links()[id]||null;
+B.gameId=id=>{if(!/^\d{17,22}$/.test(String(id)))throw Error('ID Discord tidak valid.');return B.linked(id)||'dc-'+id;};
+B.newCode=id=>{B.gameId(id);if(process.env.WA_ENABLED!=='true')throw Error('Bot WA belum diaktifkan. Kamu tetap bisa bermain tanpa link.');if(B.linked(id))throw Error('Akun sudah terhubung. Hubungi owner untuk pemulihan akun.');for(const [c,v] of Object.entries(state.codes))if(v.exp<=Date.now()||v.id===id)delete state.codes[c];const code=crypto.randomBytes(9).toString('hex').toUpperCase();state.codes[code]={id,exp:Date.now()+10*60000};save();return code;};
+B.acceptLink=(code,jid)=>{
+ const k=String(code||'').toUpperCase(),v=state.codes[k];jid=normalize(jid);
+ if(!v||v.exp<=Date.now()||!/^\d+@(?:s\.whatsapp\.net|lid)$/.test(jid))throw Error('Kode tidak valid/kedaluwarsa. Buat os!link lagi.');
+ if(B.linked(v.id)||Object.values(B.links()).includes(jid))throw Error('Salah satu akun sudah terhubung. Hubungi owner.');
+ const g=B.wa?.game;if(!g)throw Error('Luckyverse belum siap.');const dc='dc-'+v.id,p=g.data.players[dc];
+ if(p&&g.data.players[jid])throw Error('Kedua akun sudah memiliki profil. Progres keduanya tetap tersimpan. Hubungi owner untuk migrasi; tidak ada saldo yang digabung otomatis.');
+ const old=structuredClone(g.data);
+ try{g.data.accountLinks ||= {};g.data.accountLinks[v.id]=jid;
+ if(p){g.data.players[jid]={...p,id:jid};delete g.data.players[dc];for(const voucher of Object.values(g.data.vouchers))if(voucher.ownerId===dc)voucher.ownerId=jid;}
+ g.save();}catch(e){g.data=old;throw e;}
+ if(p){const session=g.sessions.get(dc);if(session)g.sessions.set(jid,session);g.sessions.delete(dc);for(const [key,until] of g.cooldowns){if(key.startsWith(dc+':')){g.cooldowns.set(jid+key.slice(dc.length),until);g.cooldowns.delete(key);}}}
+ delete state.codes[k];try{save();}catch(e){console.error('Pembersihan kode link tertunda:',e.message);}return v.id;
+};
 B.flatPromos=()=>{if(!B.wa)return [];B.wa.promos.refresh();return B.wa.promos.data.promos.flatMap(p=>p.prices.map(x=>({id:p.id,sku:x.sku,price:x.price,original:x.original,slots:p.slots,caption:p.caption,endsAt:p.endsAt,ended:p.reason==='Diakhiri admin'})));};
 B.allReservations=()=>[...B.dcTickets(),...(B.wa?.orders.data.orders||[]).filter(o=>o.promoId&&o.packageConfirmedAt&&!o.cancelledAt).map(o=>({id:o.id,promoId:o.promoId,status:o.doneAt?'completed':o.paidAt?'processing':'new'}))];
 B.offer=sku=>B.wa?.promos.offer(sku,B.wa.loadConfig().groupId)||null;
@@ -19,7 +34,7 @@ B.createPromo=(entries,duration,slots,caption,creator)=>{if(!B.wa)throw Error('S
 B.endPromo=id=>{const p=B.wa?.promos.data.promos.find(p=>p.id===id&&p.endsAt>Date.now()&&p.reason!=='Diakhiri admin');if(!p)throw Error('Promo aktif tidak ditemukan.');p.closedAt=Date.now();p.reason='Diakhiri admin';delete p.endNotifiedAt;B.wa.promos.save();};
 B.sales=(scope='today')=>{const day=t=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta',dateStyle:'short'}).format(new Date(t));const all=[...B.dcTickets().filter(t=>t.type==='purchase'&&t.status==='completed'&&t.doneAt).map(t=>({at:t.doneAt,amount:t.total})),...(B.wa?.orders.data.orders||[]).filter(t=>t.doneAt&&t.paidAt&&!t.cancelledAt).map(t=>({at:t.doneAt,amount:t.amount}))].filter(t=>scope==='all'||day(t.at)===day(Date.now()));return {count:all.length,total:all.reduce((a,t)=>a+(Number(t.amount)||0),0)};};
 B.enqueue=(event,requested)=>{if(state.outbox.length>=100)throw Error('Antrean posting penuh, periksa koneksi kedua bot.');const enabled=[];if(process.env.DISCORD_ENABLED!=='false')enabled.push('dc');if(process.env.WA_ENABLED==='true')enabled.push('wa');const targets=requested?[...new Set(requested)]:enabled;if(!targets.length||targets.some(x=>!enabled.includes(x)))throw Error('Platform tujuan belum diaktifkan di .env.');state.outbox.push({...event,id:crypto.randomUUID(),targets,createdAt:Date.now(),attempts:0,next:0});save();};
-B.queueInfo=(body,origin,targets)=>{body=String(body).trim();if(!body||body.length>900)throw Error('Isi informasi 1–900 karakter.');B.enqueue({kind:'info',body,origin,caption:'',tagAll:true},targets);};
+B.queueInfo=(body,origin,targets,media=null)=>{body=String(body).trim();if(!body||body.length>900)throw Error('Isi informasi 1–900 karakter.');if(media){if(body.length>800)throw Error('Announcement dengan media maksimal 800 karakter agar caption WA tidak terpotong.');require('./media-bridge').unpack(media);if(state.outbox.reduce((n,e)=>n+(e.media?.data?.length||0),0)+media.data.length>32*1024*1024)throw Error('Antrean media penuh. Tunggu posting sebelumnya.');}B.enqueue({kind:'info',body,origin,caption:'',tagAll:true,...(media?{media}:{})},targets);};
 B.images=async ev=>{if(ev.kind==='info')return content.render('information','Starfall Information',ev.body);const pages=content.pages(B.flatPromos().filter(p=>p.id===ev.promoId),B.allReservations(),catalog);const result=[];for(const p of pages)result.push(...await content.render('promo',p.heading,p.body));return result;};
 let busy=false;
 B.flush=async()=>{if(busy)return;busy=true;try{for(const ev of [...state.outbox]){if(ev.next>Date.now())continue;if(ev.kind==='promo'&&!B.flatPromos().some(p=>p.id===ev.promoId&&C.promoAvailable(p,B.allReservations()))){state.outbox=state.outbox.filter(e=>e!==ev);save();continue;}for(const dest of [...ev.targets]){const sender=dest==='dc'?B.dcSender:B.waSender;if(!sender)continue;try{await sender(ev);ev.targets=ev.targets.filter(x=>x!==dest);save();}catch(err){console.error('Posting '+dest+' tertunda:',err.message);ev.attempts++;ev.next=Date.now()+Math.min(300000,5000*2**Math.min(ev.attempts,6));save();}}if(!ev.targets.length){state.outbox=state.outbox.filter(e=>e!==ev);save();}}}finally{busy=false;}};

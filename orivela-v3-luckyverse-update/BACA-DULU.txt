@@ -1,0 +1,19 @@
+ORIVELA V3 · LUCKYVERSE BOT UPDATE
+Prasyarat: ORIVELA V3 dengan Admin Control & Media Update terakhir yang sudah bekerja. Patch bukan instalasi bersih. Jangan menjalankan salinan kedua pada database yang sama.
+
+1. Backup file produksi secara privat, termasuk .env, shared-data, wa/data, wa/config.json, session WA, dan discord/data/runtime. Stop KiosPanel.
+2. Buat aplikasi Discord baru bernama Orivela Luckyverse di https://discord.com/developers/applications. Di menu Bot aktifkan Message Content Intent, simpan, Reset Token. Token bot baru harus berbeda dari token Store. Jangan share token.
+3. Menu Installation: Guild Install, scope bot. Beri View Channels, Send Messages, Read Message History, Embed Links (tanpa Administrator). Invite ke server Orivela lama. Pastikan bot bisa melihat dan mengirim pesan di game-zone. Tidak perlu membuat server baru.
+4. Upload ZIP dan extract di /home/container. Folder orivela-v3-luckyverse-update harus berada sejajar index.js.
+5. Buka .env, pertahankan semua isi lama; tambahkan:
+LUCKYVERSE_ENABLED=true
+LUCKYVERSE_TOKEN=TOKEN_BOT_GAME_BARU
+6. Startup Command sementara: node orivela-v3-luckyverse-update/apply.js && npm install --allow-git=all --no-audit --no-fund && node index.js
+7. Start, cek ORIVELA Luckyverse Update OK (atau sudah terpasang), Discord Store online, Luckyverse online: ... | os!help. Cek WA online seperti biasa. Setelah sukses, jalankan /setup pada bot Store untuk mengganti panel game-information dengan panduan prefix. Game-zone tetap memakai ID lama.
+8. Coba os!help, os!bal, os!daily, os!mine di game-zone. Cek hasil mining otomatis sekitar 30 detik. Periksa WA .games dan ticket Store. Cek os!voucher dan os!link di DM bot game. Setelah berhasil, Startup Command biasa: npm install --allow-git=all --no-audit --no-fund && node index.js
+
+Link opsional: pemain WA dan Discord masing-masing bisa bermain tanpa link. Profil baru Discord: dc-<ID Discord>. Pemain lama yang sudah link tetap memakai data WA yang sama. os!link via DM bot game memberi kode sekali pakai 10 menit. Kirim .link KODE ke chat pribadi bot WA menggunakan akun milik sendiri. Jika hanya satu sisi punya profil, progres itu dipertahankan (profil DC dipindah ke ID WA bila WA belum punya profil). Jika kedua akun sudah punya profil, linking ditolak tanpa perubahan data; hubungi owner untuk pemeriksaan migrasi. Tidak ada penggabungan saldo otomatis. Leaderboard masing-masing platform menampilkan pemain platform itu plus akun terhubung. Voucher standalone Discord dapat digunakan pada order Discord sendiri. Voucher/kode link selalu privat; cek voucher di DM os!vouchers. Voucher tidak dapat diuangkan. Coinflip/slots tidak diaktifkan di Discord; WA tidak diubah. Perintah admin WA tetap ada; patch tidak menambah perintah admin ekonomi baru di Discord.
+
+File patch memuat kode saja, tidak berisi token/session/database. Installer memverifikasi SHA256 sebelum mengganti file dan membackup kode lama. Bila gagal karena file berbeda, jangan paksa overwrite; kirim log yang disensor. Jika rollback setelah pemain baru aktif, jangan pulihkan database lama secara sembarangan, karena akun/link baru perlu dipertahankan. Live gateway, permissions dan DM masih perlu diuji.
+
+Uji lokal: node --test luckyverse-tests.js (8 tes baru). Tes regresi node --test tests.js (12) dan cd discord && node --test tests.js (12) lulus pada source bersih yang telah dipatch. Tidak ada uji live Discord/WA.

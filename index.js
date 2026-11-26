@@ -6,6 +6,7 @@ const B=require('./shared');
 // Both adapters intentionally run in one process: never run another instance using these files.
 const wa=require('./wa/orivela-main-fixed');
 if(process.env.DISCORD_ENABLED!=='false'){try{require('./discord/index');}catch(e){console.error('Discord gagal start:',e.message);if(process.env.WA_ENABLED!=='true')process.exit(1);}}
+if(process.env.LUCKYVERSE_ENABLED==='true'){try{require('./discord/luckyverse-bot').start(B);}catch(e){console.error('Luckyverse gagal start:',e.message);}}
 if(process.env.WA_ENABLED==='true'){
  const connect=()=>wa.connect().catch(e=>{console.error('WA startup gagal:',e.message);setTimeout(connect,30000);});connect();
 }else console.log('WA dinonaktifkan (.env WA_ENABLED=false); Discord dapat diuji dahulu.');

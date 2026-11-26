@@ -1,0 +1,168 @@
+TAP version 13
+# Posting wa tertunda: simulated timeout
+# Subtest: WA source initializes and root shares actual game and order objects
+ok 1 - WA source initializes and root shares actual game and order objects
+  ---
+  duration_ms: 0.896456
+  type: 'test'
+  ...
+# Subtest: shared promo slot locks across WA and Discord, releases on cancellation
+ok 2 - shared promo slot locks across WA and Discord, releases on cancellation
+  ---
+  duration_ms: 3.410069
+  type: 'test'
+  ...
+# Subtest: verified one-time link and shared voucher reservation
+ok 3 - verified one-time link and shared voucher reservation
+  ---
+  duration_ms: 2.347879
+  type: 'test'
+  ...
+# Subtest: WA and Discord read same store override and persistence
+ok 4 - WA and Discord read same store override and persistence
+  ---
+  duration_ms: 0.694471
+  type: 'test'
+  ...
+# Subtest: combined report counts only completed paid orders
+ok 5 - combined report counts only completed paid orders
+  ---
+  duration_ms: 1.315282
+  type: 'test'
+  ...
+# Subtest: persistent outbox independent delivery and retry, no repeated success
+ok 6 - persistent outbox independent delivery and retry, no repeated success
+  ---
+  duration_ms: 2.027668
+  type: 'test'
+  ...
+# Subtest: private backup excludes active linking codes and includes both data sets
+ok 7 - private backup excludes active linking codes and includes both data sets
+  ---
+  duration_ms: 0.732676
+  type: 'test'
+  ...
+# Subtest: announcement routing: WA, Discord, both; disabled destination rejected
+ok 8 - announcement routing: WA, Discord, both; disabled destination rejected
+  ---
+  duration_ms: 3.115246
+  type: 'test'
+  ...
+# Subtest: text embeds, controlled mentions, WA format, promo slots and expiration
+ok 9 - text embeds, controlled mentions, WA format, promo slots and expiration
+  ---
+  duration_ms: 14.233176
+  type: 'test'
+  ...
+# Subtest: announcement YES/NO from WA; media retained across targets and validated
+ok 10 - announcement YES/NO from WA; media retained across targets and validated
+  ---
+  duration_ms: 2.18529
+  type: 'test'
+  ...
+# Subtest: WA order bridge: private recipient, payment lock, delivery and duplicate rejection
+ok 11 - WA order bridge: private recipient, payment lock, delivery and duplicate rejection
+  ---
+  duration_ms: 4.714244
+  type: 'test'
+  ...
+# Subtest: WA buyer reply bridge accepts only actual order sender and deduplicates
+ok 12 - WA buyer reply bridge accepts only actual order sender and deduplicates
+  ---
+  duration_ms: 1.219431
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 168.361866
+
+TAP version 13
+# Subtest: jam WIB, batas buka/tutup dan override
+ok 1 - jam WIB, batas buka/tutup dan override
+  ---
+  duration_ms: 13.91561
+  type: 'test'
+  ...
+# Subtest: katalog 22 produk, 101 SKU unik, harga positif
+ok 2 - katalog 22 produk, 101 SKU unik, harga positif
+  ---
+  duration_ms: 0.451663
+  type: 'test'
+  ...
+# Subtest: QRIS merchant baru valid, CRC dan nominal semua paket
+ok 3 - QRIS merchant baru valid, CRC dan nominal semua paket
+  ---
+  duration_ms: 6.869509
+  type: 'test'
+  ...
+# Subtest: invoice expired tepat 30 menit dan tidak mengubah order paid
+ok 4 - invoice expired tepat 30 menit dan tidak mengubah order paid
+  ---
+  duration_ms: 0.156119
+  type: 'test'
+  ...
+# Subtest: promo slot, expiry, voucher tidak digabung, total valid
+ok 5 - promo slot, expiry, voucher tidak digabung, total valid
+  ---
+  duration_ms: 0.769501
+  type: 'test'
+  ...
+# Subtest: penyimpanan atomic dan Luckyverse saldo/daily/mining/voucher
+ok 6 - penyimpanan atomic dan Luckyverse saldo/daily/mining/voucher
+  ---
+  duration_ms: 8.78196
+  type: 'test'
+  ...
+# Subtest: layout aesthetic: key tetap, nama unik, migrasi aman dan ticket
+ok 7 - layout aesthetic: key tetap, nama unik, migrasi aman dan ticket
+  ---
+  duration_ms: 1.104202
+  type: 'test'
+  ...
+# Subtest: format WA: durasi, slot, banyak kode, harga diskon valid
+ok 8 - format WA: durasi, slot, banyak kode, harga diskon valid
+  ---
+  duration_ms: 1.268523
+  type: 'test'
+  ...
+# Subtest: promo multi paket: shared slots, panel habis/expired, tidak merusak harga
+ok 9 - promo multi paket: shared slots, panel habis/expired, tidak merusak harga
+  ---
+  duration_ms: 1.640089
+  type: 'test'
+  ...
+# Subtest: welcome: role dan welcome independen, retry tetap setelah serialisasi
+ok 10 - welcome: role dan welcome independen, retry tetap setelah serialisasi
+  ---
+  duration_ms: 1.510578
+  type: 'test'
+  ...
+# Subtest: wrap panjang dan template tersedia
+ok 11 - wrap panjang dan template tersedia
+  ---
+  duration_ms: 0.484111
+  type: 'test'
+  ...
+# Subtest: celestial QR: crisp modules, quiet zone, outside untouched and invalid dimensions rejected
+ok 12 - celestial QR: crisp modules, quiet zone, outside untouched and invalid dimensions rejected
+  ---
+  duration_ms: 9.587863
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 104.789608
+
+QR dummy Rp15.000: decoded equals input (OpenCV/Python qrcode).

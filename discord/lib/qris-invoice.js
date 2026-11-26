@@ -99,7 +99,7 @@ class InvoiceStore {
 }
 // Celestial template has an opaque white panel. Keep QR modules pixel-aligned,
 // with a minimum four-module quiet zone on each edge. No scaling or antialiasing.
-const QR_PANEL=Object.freeze({left:344,top:400,side:566,width:1254,height:1254});
+const QR_PANEL=Object.freeze({left:343,top:381,side:568,width:1254,height:1254});
 function paintQR(template,modules) {
   const {left,top,side,width,height}=QR_PANEL;
   if(template.width!==width||template.height!==height)throw Error('Template QRIS harus 1254 × 1254.');

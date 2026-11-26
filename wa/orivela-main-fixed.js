@@ -14,7 +14,7 @@ const { texts, publicReply, isGroupJid, normalizeCommand, digits } = require('./
 const { OrderStore, parseOrderForm, parseAmount, rupiah, normalizeId } = require('./order-system');
 const { LuckyverseGame, ITEMS, PICKAXES, levelInfo } = require('./luckyverse-game');
 
-const B = require('../shared');
+const B = require('../shared'), M=require('../media-bridge');
 const ROOT = __dirname;
 const CFG = path.join(ROOT, 'config.json');
 const AUTH = path.join(ROOT, 'auth_info_baileys');
@@ -192,7 +192,7 @@ function saveConfig(cfg) {
 function getText(message) {
   if (!message) return '';
   const content = message.ephemeralMessage?.message || message.viewOnceMessage?.message || message;
-  return content.conversation || content.extendedTextMessage?.text || content.imageMessage?.caption || '';
+  return content.conversation || content.extendedTextMessage?.text || content.imageMessage?.caption || content.videoMessage?.caption || '';
 }
 function localId(id) { return String(id || '').split(':')[0].split('@')[0]; }
 function IDsForParticipant(participant) {
@@ -955,6 +955,7 @@ async function handleLuckyverseCommand(sock, msg, chat, parts, command, config) 
   }
   const response = luckyverse.handleCommand(userId, displayName, command, commandArgs, {
     chatId: chat,
+    platform: 'wa',
     mentionJid: msg.key.participantAlt || msg.key.participantPhone || msg.key.participant
   });
   if (response) return sendText(sock, chat, response, msg);
@@ -1074,7 +1075,8 @@ async function deliverOrderInvoice(sock,order,invoice,cfg) {
       orders.save();
     }
     if (paymentDue(order)) throw Error('Tagihan sudah kedaluwarsa.');
-    await sendInvoice(sock,order,invoice,cfg,order.quote);
+    const sent=await sendInvoice(sock,order,invoice,cfg,order.quote);
+    if(sent?.key?.id){order.waReplyIds=[...new Set([...(order.waReplyIds||[]),sent.key.id])].slice(-30);orders.save();}
     order.invoiceSentAt ||= new Date().toISOString(); orders.save();
   } finally {invoiceInFlight.delete(order.id);}
 }
@@ -1182,7 +1184,7 @@ async function handleOrderForm(sock, chat, msg, raw, cfg) {
       `✦ Form order belum lengkap. Isi: ${parsed.missing.join(', ')}.\nKirim ulang form lengkap yaa ♡`, msg);
     return true;
   }
-  if (!isGroupJid(cfg.adminGroupId) || cfg.adminGroupId === chat || cfg.adminGroupId === cfg.luckyverseGroupId) {
+  if (process.env.DISCORD_ENABLED==='false' && (!isGroupJid(cfg.adminGroupId) || cfg.adminGroupId === chat || cfg.adminGroupId === cfg.luckyverseGroupId)) {
     await sendText(sock, chat, '✦ Sistem order sedang disiapkan admin. Hubungi admin untuk mencatat order sementara.', msg);
     return true;
   }
@@ -1225,9 +1227,9 @@ async function handleOrderForm(sock, chat, msg, raw, cfg) {
     });
     if (!result.created) return true;
     const order = result.order;
-    try { await sendText(sock,chat,texts.orderReceived.replaceAll('{order_id}', '#'+order.id),msg); }
+    try { const sent=await sendText(sock,chat,texts.orderReceived.replaceAll('{order_id}', '#'+order.id)+'\n\nBalas pesan ini atau QRIS untuk menghubungi staff. Alternatif: .pesan #'+order.id+' isi pesan. Kirim bukti bayar dengan reply QRIS; jangan kirim password/OTP di grup.',msg); if(sent?.key?.id){order.waReplyIds=[sent.key.id];orders.save();} }
     catch(error){console.error(`Konfirmasi order #${order.id} gagal:`,error.message);}
-    try { await notifyAdmin(sock,cfg.adminGroupId,order); }
+    try { if(isGroupJid(cfg.adminGroupId)&&cfg.adminGroupId!==chat)await notifyAdmin(sock,cfg.adminGroupId,order); }
     catch(error){ console.error(`Notif order #${order.id} tertunda:`,error.message); }
     return true;
   } finally {
@@ -1235,16 +1237,17 @@ async function handleOrderForm(sock, chat, msg, raw, cfg) {
   }
 }
 
-async function handleAdminOrderCommand(sock, msg, chat, parts, command) {
-  const admin = await verifiedOrderAdmin(sock, chat, msg);
+async function handleAdminOrderCommand(sock, msg, chat, parts, command, context=null) {
+  const admin = context?.admin || await verifiedOrderAdmin(sock, chat, msg);
+  const respond = context?.respond || ((text)=>sendText(sock,chat,text,msg));
   if (!admin) return; // hanya admin resmi grup notifikasi
 
   if (command === 'rekap') {
     if (parts[1] && parts[1].toLowerCase() !== 'all') {
-      return sendText(sock, chat, 'Contoh: .rekap (hari ini) atau .rekap all (semua waktu)', msg);
+      return respond('Contoh: .rekap (hari ini) atau .rekap all (semua waktu)');
     }
     const r = orders.recap(parts[1] ? 'all' : 'today'); const combined=B.sales(parts[1]?'all':'today');
-    return sendText(sock, chat, [
+    return respond([
       '✦ REKAP ORIVELA STARFALL ✦',
       r.scope === 'all' ? 'Periode: Semua waktu' : `Tanggal: ${r.today} (WIB)`,
       `Order masuk: ${r.createdCount}`,
@@ -1255,57 +1258,57 @@ async function handleAdminOrderCommand(sock, msg, chat, parts, command) {
       `Pembayaran tanpa nominal: ${r.missingAmountCount}`,
       `Gabungan WA + Discord (order selesai): ${combined.count} · ${rupiah(combined.total)}`,
       'Catatan: total hanya menghitung pembayaran terverifikasi dengan nominal tercatat.'
-    ].join('\n'), msg);
+    ].join('\n'));
   }
 
   const ref = resolveOrderReference(chat, msg, parts.slice(1));
-  if (ref.error) return sendText(sock, chat, `✦ ${ref.error}\nContoh: reply NEW ORDER lalu .paid 30000 atau .d.`, msg);
+  if (ref.error) return respond(`✦ ${ref.error}\nContoh: reply NEW ORDER lalu .paid 30000 atau .d.`);
   const order = orders.byId(ref.id);
-  if (!order) return sendText(sock, chat, '✦ ID pesanan tidak ditemukan.', msg);
+  if (!order) return respond('✦ ID pesanan tidak ditemukan.');
   if(paymentDue(order) && cancelPayment(order,'Waktu pembayaran 30 menit habis')) {
     try{await notifyCancellation(sock,order,loadConfig());}catch(e){console.error('Notif pembatalan tertunda:',e.message);}
-    return sendText(sock,chat,'Tagihan kedaluwarsa. Jika dana sudah masuk, lakukan rekonsiliasi manual dengan owner.',msg);
+    return respond('Tagihan kedaluwarsa. Jika dana sudah masuk, lakukan rekonsiliasi manual dengan owner.');
   }
 
   if (command === 'tagih' || command === 'qris') {
     const cfg=loadConfig();
-    if (!qrisEnabled(cfg) || order.paidAt || order.doneAt || order.cancelledAt || order.groupId!==cfg.groupId) return sendText(sock,chat,'QRIS tidak tersedia untuk order ini.',msg);
+    if (!qrisEnabled(cfg) || order.paidAt || order.doneAt || order.cancelledAt || order.groupId!==cfg.groupId) return respond('QRIS tidak tersedia untuk order ini.');
     const invoice=invoiceStore.get(order.id);
-    if(!invoice || (order.adminSelectRequired && !order.packageConfirmedAt)) return sendText(sock,chat,'QRIS belum dibuat. Gunakan .ambil KODE PAKET terlebih dahulu.',msg);
+    if(!invoice || (order.adminSelectRequired && !order.packageConfirmedAt)) return respond('QRIS belum dibuat. Gunakan .ambil KODE PAKET terlebih dahulu.');
     const lock=adminLocks.data.claims[order.id];
-    if(!adminLocks.sameOwner(lock,admin)) return sendText(sock,chat,'Hanya admin yang mengambil order boleh mengirim ulang QRIS. Gunakan .ambil KODE jika belum ada penanggung jawab.',msg);
+    if(!adminLocks.sameOwner(lock,admin)) return respond('Hanya admin yang mengambil order boleh mengirim ulang QRIS. Gunakan .ambil KODE jika belum ada penanggung jawab.');
     try {
       if(command==='tagih' && qrisInvoice.amountValue(ref.remainder.join(' '))!==invoice.amount) throw Error('Nominal sudah dikunci: '+rupiah(invoice.amount));
       await deliverOrderInvoice(sock,order,invoice,cfg);
-      return sendText(sock,chat,`QRIS #${order.id} ${rupiah(invoice.amount)} dikirim ulang ke Store.`,msg);
-    } catch(error){return sendText(sock,chat,`QRIS gagal: ${error.message}`,msg);}
+      return respond(`QRIS #${order.id} ${rupiah(invoice.amount)} dikirim ulang ke Store.`);
+    } catch(error){return respond(`QRIS gagal: ${error.message}`);}
   }
 
   if (command === 'cancel') {
-    if(invoiceInFlight.has(order.id))return sendText(sock,chat,'QRIS sedang dikirim; tunggu hasilnya sebelum membatalkan.',msg);
-    if(order.cancelledAt || order.paidAt || order.doneAt)return sendText(sock,chat,'Order tidak dapat dibatalkan.',msg);
-    if(ref.remainder.length && ref.remainder.join(' ').toUpperCase()!=='BELUM BAYAR')return sendText(sock,chat,'Reply NEW ORDER dengan .cancel setelah memastikan tidak ada dana masuk.',msg);
-    const taken=adminLocks.claim(order.id,admin);if(taken.error)return sendText(sock,chat,taken.error,msg);
-    if(!cancelPayment(order,'Dibatalkan admin'))return sendText(sock,chat,'Order tidak dapat dibatalkan.',msg);
+    if(invoiceInFlight.has(order.id))return respond('QRIS sedang dikirim; tunggu hasilnya sebelum membatalkan.');
+    if(order.cancelledAt || order.paidAt || order.doneAt)return respond('Order tidak dapat dibatalkan.');
+    if(ref.remainder.length && ref.remainder.join(' ').toUpperCase()!=='BELUM BAYAR')return respond('Reply NEW ORDER dengan .cancel setelah memastikan tidak ada dana masuk.');
+    const taken=adminLocks.claim(order.id,admin);if(taken.error)return respond(taken.error);
+    if(!cancelPayment(order,'Dibatalkan admin'))return respond('Order tidak dapat dibatalkan.');
     try{await notifyCancellation(sock,order,loadConfig());}catch(e){console.error('Notif pembatalan tertunda:',e.message);}
-    return sendText(sock,chat,`Order #${order.id} dibatalkan. Slot promo/voucher dilepas. Periksa GoPay Merchant jika ada pembayaran terlambat.`,msg);
+    return respond(`Order #${order.id} dibatalkan. Slot promo/voucher dilepas. Periksa GoPay Merchant jika ada pembayaran terlambat.`);
   }
-  if (order.cancelledAt)return sendText(sock,chat,'Order sudah dibatalkan.',msg);
+  if (order.cancelledAt)return respond('Order sudah dibatalkan.');
   // Semua perubahan status diperiksa terhadap admin penanggung jawab.
   // Setelah admin baru mengunci, admin kedua selalu ditolak.
   if (command === 'ambil') {
     const cfg=loadConfig();
-    if (order.paidAt || order.doneAt || order.cancelledAt || order.groupId!==cfg.groupId) return sendText(sock,chat,'Order sudah dibayar/selesai/dibatalkan atau bukan Store aktif.',msg);
-    if(invoiceInFlight.has(order.id))return sendText(sock,chat,'QRIS sedang dikirim. Tunggu hasilnya.',msg);
+    if (order.paidAt || order.doneAt || order.cancelledAt || order.groupId!==cfg.groupId) return respond('Order sudah dibayar/selesai/dibatalkan atau bukan Store aktif.');
+    if(invoiceInFlight.has(order.id))return respond('QRIS sedang dikirim. Tunggu hasilnya.');
     try {
       const input=ref.remainder.join(' ');
       const normal=/^P\d{3}\s+normal$/i.test(input);
       const row=selectPackage(normal?input.split(/\s+/)[0]:input);
-      if(!row || row.amount==null)return sendText(sock,chat,'Paket tidak ditemukan atau belum aktif. Gunakan .listkode NamaProduk, lalu reply NEW ORDER: .ambil P008 atau .ambil Produk | Varian | Durasi. QRIS belum diterbitkan oleh perintah ini.',msg);
+      if(!row || row.amount==null)return respond('Paket tidak ditemukan atau belum aktif. Gunakan .listkode NamaProduk, lalu reply NEW ORDER: .ambil P008 atau .ambil Produk | Varian | Durasi. QRIS belum diterbitkan oleh perintah ini.');
       const previous=invoiceStore.get(order.id);
       const existingLock=adminLocks.data.claims[order.id];
-      if(existingLock && !adminLocks.sameOwner(existingLock,admin))return sendText(sock,chat,`Order sudah diambil admin ${existingLock.name}.`,msg);
-      if((previous || order.packageConfirmedAt) && order.sku!==row.sku)return sendText(sock,chat,'Paket/tagihan sudah dikunci. Jangan mengubah nominal QRIS yang mungkin sudah diterima buyer. Batalkan setelah memastikan belum bayar, lalu buat order baru.',msg);
+      if(existingLock && !adminLocks.sameOwner(existingLock,admin))return respond(`Order sudah diambil admin ${existingLock.name}.`);
+      if((previous || order.packageConfirmedAt) && order.sku!==row.sku)return respond('Paket/tagihan sudah dikunci. Jangan mengubah nominal QRIS yang mungkin sudah diterima buyer. Batalkan setelah memastikan belum bayar, lalu buat order baru.');
       if(!qrisEnabled(cfg)||cfg.qrisAutoPrice!==true)throw Error('QRIS otomatis belum diaktifkan.');
       const locked=!!(previous||order.packageConfirmedAt);
       const originalPrice=locked ? qrisInvoice.amountValue(order.originalPrice) : qrisInvoice.amountValue(row.amount);
@@ -1325,7 +1328,7 @@ async function handleAdminOrderCommand(sock, msg, chat, parts, command) {
       if(previous && previous.amount!==total)throw Error('Nominal tagihan lama tidak cocok; hubungi owner.');
       qrisInvoice.makeAmountPayload(fs.readFileSync(path.join(ROOT,'..','discord','data','qris-payload.txt'),'utf8'),total);
       const taken=adminLocks.claim(order.id,admin);
-      if(taken.error)return sendText(sock,chat,taken.error,msg);
+      if(taken.error)return respond(taken.error);
       if(!locked){
         Object.assign(order,{product:row.product,variant:row.variant,duration:row.duration,sku:row.sku,originalPrice,total,packageConfirmedAt:new Date().toISOString(),...(promo?{promoId:promo.id,promoDiscount:originalPrice-total}:{})});
         orders.save();
@@ -1333,86 +1336,83 @@ async function handleAdminOrderCommand(sock, msg, chat, parts, command) {
         promos.refresh();
       }
       const invoice=issueInvoice(order,total,cfg);
-      if(order.invoiceSentAt)return sendText(sock,chat,`Order #${order.id} sudah diambil dan QRIS sudah dikirim. Gunakan .qris #${order.id} jika perlu kirim ulang.`,msg);
+      if(order.invoiceSentAt)return respond(`Order #${order.id} sudah diambil dan QRIS sudah dikirim. Gunakan .qris #${order.id} jika perlu kirim ulang.`);
       await deliverOrderInvoice(sock,order,invoice,cfg);
-      const sent=await sendText(sock,chat,`✦ ORDER DIAMBIL ♡\nID: #${order.id}\nAdmin: ${taken.lock.name}\nPaket: ${order.sku} | ${order.product} | ${order.variant} | ${order.duration}\nHarga: ${rupiah(originalPrice)}\nVoucher: ${rupiah(discount)}\n${order.promoId?`Promo ${order.promoId}: -${rupiah(order.promoDiscount)}\n`:""}Total: ${rupiah(total)}\nQRIS terkirim ke Store.\nSetelah cek dana masuk: .paid #${order.id} ${total}`,msg);
-      adminLocks.rememberNotification(chat,sent?.key?.id,order.id);
+      const sent=await respond(`✦ ORDER DIAMBIL ♡\nID: #${order.id}\nAdmin: ${taken.lock.name}\nPaket: ${order.sku} | ${order.product} | ${order.variant} | ${order.duration}\nHarga: ${rupiah(originalPrice)}\nVoucher: ${rupiah(discount)}\n${order.promoId?`Promo ${order.promoId}: -${rupiah(order.promoDiscount)}\n`:""}Total: ${rupiah(total)}\nQRIS terkirim ke Store.\nSetelah cek dana masuk: .paid #${order.id} ${total}`);
+      if(!context)adminLocks.rememberNotification(chat,sent?.key?.id,order.id);
       if(order.promoId) await promos.tick(sock,cfg);
       return;
-    }catch(error){return sendText(sock,chat,`✦ .ambil belum selesai: ${error.message}\nJika QRIS gagal terkirim, ulangi .ambil dengan kode yang sama atau .qris jika tagihan sudah dibuat.`,msg);}
+    }catch(error){return respond(`✦ .ambil belum selesai: ${error.message}\nJika QRIS gagal terkirim, ulangi .ambil dengan kode yang sama atau .qris jika tagihan sudah dibuat.`);}
   }
   if (command === 'lepas') {
-    if(invoiceInFlight.has(order.id))return sendText(sock,chat,'QRIS sedang dikirim; tunggu hasilnya.',msg);
-    if (order.paidAt) return sendText(sock, chat, '✦ Order sudah PAID; tidak bisa dilepas otomatis. Hubungi pengelola bot untuk pengalihan yang aman.', msg);
+    if(invoiceInFlight.has(order.id))return respond('QRIS sedang dikirim; tunggu hasilnya.');
+    if (order.paidAt) return respond('✦ Order sudah PAID; tidak bisa dilepas otomatis. Hubungi pengelola bot untuk pengalihan yang aman.');
     const r = adminLocks.release(order.id, admin);
-    return sendText(sock, chat, `✦ ${r.error || `Order #${order.id} dilepas dan bisa diambil admin lain.`}`, msg);
+    return respond(`✦ ${r.error || `Order #${order.id} dilepas dan bisa diambil admin lain.`}`);
   }
   if (command === 'paid' || command === 'nominal') {
     let amount;
     try {
       amount = parseAmount(ref.remainder.join(' '));
     } catch (error) {
-      return sendText(sock, chat, `✦ ${error.message}`, msg);
+      return respond(`✦ ${error.message}`);
     }
     const invoice = invoiceStore.get(order.id);
-    if (!order.paidAt && (!invoice || (order.adminSelectRequired && (!order.packageConfirmedAt || !order.invoiceSentAt)))) return sendText(sock,chat,'Belum ada QRIS yang dikonfirmasi terkirim. Gunakan .ambil KODE, atau .qris untuk mengirim ulang tagihan.',msg);
-    if (invoiceInFlight.has(order.id)) return sendText(sock,chat,'QRIS sedang dikirim. Tunggu hasilnya.',msg);
+    if (!order.paidAt && (!invoice || (order.adminSelectRequired && (!order.packageConfirmedAt || !order.invoiceSentAt)))) return respond('Belum ada QRIS yang dikonfirmasi terkirim. Gunakan .ambil KODE, atau .qris untuk mengirim ulang tagihan.');
+    if (invoiceInFlight.has(order.id)) return respond('QRIS sedang dikirim. Tunggu hasilnya.');
     if (amount === null || amount !== order.total || (invoice && amount !== invoice.amount)) {
-      return sendText(sock, chat, `Nominal tagihan #${order.id}: ${rupiah(order.total)}. Setelah benar-benar cek dana masuk, gunakan .${command} #${order.id} ${order.total}. Jika ada selisih, hubungi pengelola dan jangan tandai PAID.`, msg);
+      return respond(`Nominal tagihan #${order.id}: ${rupiah(order.total)}. Setelah benar-benar cek dana masuk, gunakan .${command} #${order.id} ${order.total}. Jika ada selisih, hubungi pengelola dan jangan tandai PAID.`);
     }
     if (command === 'nominal' && amount === null) {
-      return sendText(sock, chat, '✦ Contoh: reply notifikasi lalu .nominal 30000, atau .nominal #ID 30000', msg);
+      return respond('✦ Contoh: reply notifikasi lalu .nominal 30000, atau .nominal #ID 30000');
     }
     if (command === 'paid' && order.paidAt) {
       const taken = adminLocks.claim(order.id, admin);
-      if (taken.error) return sendText(sock, chat, `✦ ${taken.error}`, msg);
+      if (taken.error) return respond(`✦ ${taken.error}`);
       if (order.processingRequestedAt && !order.processingNotifiedAt && !order.doneAt) {
         try { await notifyProcessing(sock, order); }
-        catch (error) { return sendText(sock, chat, `✦ Order #${order.id} tetap PAID. Notifikasi proses belum terkirim; bot akan mencoba lagi.`, msg); }
-        return sendText(sock, chat, `✦ Order #${order.id} sudah PAID. Notifikasi proses dikirim ke Store.`, msg);
+        catch (error) { return respond(`✦ Order #${order.id} tetap PAID. Notifikasi proses belum terkirim; bot akan mencoba lagi.`); }
+        return respond(`✦ Order #${order.id} sudah PAID. Notifikasi proses dikirim ke Store.`);
       }
-      return sendText(sock, chat, `✦ Order #${order.id} sudah PAID. Tidak ada pembayaran baru atau notifikasi ganda.`, msg);
+      return respond(`✦ Order #${order.id} sudah PAID. Tidak ada pembayaran baru atau notifikasi ganda.`);
     }
-    if (command === 'nominal' && !order.paidAt) return sendText(sock, chat,
-      `✦ Order #${order.id} belum PAID. Verifikasi pembayaran dulu.`, msg);
+    if (command === 'nominal' && !order.paidAt) return respond(`✦ Order #${order.id} belum PAID. Verifikasi pembayaran dulu.`);
 
     const taken = adminLocks.claim(order.id, admin);
-    if (taken.error) return sendText(sock, chat, `✦ ${taken.error}`, msg);
+    if (taken.error) return respond(`✦ ${taken.error}`);
     const result = command === 'paid' ? orders.markPaid(order.id, amount) : orders.setAmount(order.id, amount);
-    if (result.error) return sendText(sock, chat, `✦ ${result.error}`, msg);
+    if (result.error) return respond(`✦ ${result.error}`);
     const current = result.order;
     let processingStatus = '';
     if (command === 'paid') {
       try { await notifyProcessing(sock, current); processingStatus = 'Notifikasi proses: terkirim ke Store'; }
       catch (error) { console.error(`Notif PROCESSING #${current.id} gagal:`, error.message); processingStatus = 'Notifikasi proses: belum terkirim; bot akan mencoba lagi. Ulangi .paid jika perlu (tidak mencatat ulang pembayaran).'; }
     }
-    return sendText(sock, chat, [
+    return respond([
       command === 'paid' ? '✦ PAYMENT VERIFIED ♡' : '✦ NOMINAL DIPERBARUI ♡',
       `ID: #${current.id}`, `Admin: ${taken.lock.name}`, `Buyer: ${current.name}`,
       `Nominal: ${rupiah(current.amount)}`, `Status: ${current.status}`, ...(current.voucher ? ['Voucher: USED'] : []),
       ...(processingStatus ? [processingStatus] : []),
       ...(current.amount === null ? ['Catatan: gunakan reply .nominal 30000 agar rupiah masuk rekap.'] : [])
-    ].join('\n'), msg);
+    ].join('\n'));
   }
   if (command === 'd') {
-    if (!order.paidAt) return sendText(sock, chat,
-      `✦ Order #${order.id} belum PAID. Verifikasi pembayaran terlebih dahulu.`, msg);
+    if (!order.paidAt) return respond(`✦ Order #${order.id} belum PAID. Verifikasi pembayaran terlebih dahulu.`);
     if (order.doneAt) {
-      const lock=adminLocks.claim(order.id,admin);if(lock.error)return sendText(sock,chat,lock.error,msg);
-      if(!order.doneNotifiedAt){await sendText(sock,order.groupId,texts.completed.replace('{id}',order.id),order.quote);order.doneNotifiedAt=new Date().toISOString();orders.save();return sendText(sock,chat,'Notifikasi DONE dikirim ulang.',msg);}
-      return sendText(sock,chat,`✦ Order #${order.id} sudah DONE. Tidak ada perubahan.`,msg);
+      const lock=adminLocks.claim(order.id,admin);if(lock.error)return respond(lock.error);
+      if(!order.doneNotifiedAt){await sendText(sock,order.groupId,texts.completed.replace('{id}',order.id),order.quote);order.doneNotifiedAt=new Date().toISOString();orders.save();return respond('Notifikasi DONE dikirim ulang.');}
+      return respond(`✦ Order #${order.id} sudah DONE. Tidak ada perubahan.`);
     }
     const taken = adminLocks.claim(order.id, admin);
-    if (taken.error) return sendText(sock, chat, `✦ ${taken.error}`, msg);
+    if (taken.error) return respond(`✦ ${taken.error}`);
     // Jangan kirim PROCESSING setelah DONE apabila pengiriman sedang berjalan.
     if (processingInFlight.has(order.id)) {
       try { await processingInFlight.get(order.id); } catch (error) { console.error('Notif proses gagal sebelum DONE:', error.message); }
     }
     const result = orders.markDone(order.id);
-    if (result.error) return sendText(sock, chat, `✦ ${result.error}`, msg);
+    if (result.error) return respond(`✦ ${result.error}`);
     const current = result.order;
-    await sendText(sock, chat,
-      `✦ ORDER COMPLETED ♡\nID: #${current.id}\nAdmin: ${taken.lock.name}\nBuyer: ${current.name}\nPayment: PAID\nStatus: DONE ✅`, msg);
+    await respond(`✦ ORDER COMPLETED ♡\nID: #${current.id}\nAdmin: ${taken.lock.name}\nBuyer: ${current.name}\nPayment: PAID\nStatus: DONE ✅`);
     try {
       await sendText(sock, current.groupId,
         texts.completed.replace('{id}',current.id), current.quote);
@@ -1423,12 +1423,60 @@ async function handleAdminOrderCommand(sock, msg, chat, parts, command) {
   }
 }
 
+const dcActions=new Set();
+function dcAdmin(actor){if(!/^\d{17,22}$/.test(actor?.id||''))throw Error('Staff Discord tidak valid.');return {key:'dc:'+actor.id,ids:['dc:'+actor.id],name:String(actor.name||'Staff Discord').replace(/[\r\n\t]/g,' ').slice(0,50)};}
+function requireWAOrder(id){const o=orders.byId(id);if(!o||o.groupId!==loadConfig().groupId||!isGroupJid(o.groupId))throw Error('Order WA tidak ditemukan di Store aktif.');return o;}
+function actualBuyer(o){for(const value of [o.buyerAccountId,o.buyerJid,o.quote?.key?.participant]){if(typeof value==='string'&&/^\d+(?::\d+)?@(?:s\.whatsapp\.net|lid)$/.test(value))return value.replace(/:\d+@/,'@');}throw Error('Identitas WA pengirim asli tidak tersedia. Jangan kirim akun ke nomor dari form.');}
+async function discordOrderAction(id,actor,action,value=''){if(!activeSocket||!B.waSender)throw Error('WhatsApp belum online.');return performDiscordOrderAction(activeSocket,id,actor,action,value);}
+async function performDiscordOrderAction(sock,id,actor,action,value=''){
+  const o=requireWAOrder(id), admin=dcAdmin(actor);if(dcActions.has(id))throw Error('Order sedang diproses.');dcActions.add(id);
+  try{
+    if(action==='send'||action==='reply'){
+      if(o.cancelledAt||o.doneAt)throw Error('Order sudah selesai/dibatalkan.');
+      if(action==='send'&&(!o.paidAt||o.deliverySentAt))throw Error('Pengiriman akun hanya setelah PAID dan belum pernah dikirim.');
+      const claim=adminLocks.claim(id,admin);if(claim.error)throw Error(claim.error);
+      const text=String(value).trim();if(!text||text.length>1500)throw Error('Isi pesan 1–1500 karakter.');
+      if(action==='send'){
+        // No account payload is saved or posted into the Discord channel or WA group.
+        if(o.deliveryAttemptAt)throw Error('Pengiriman sebelumnya belum pasti. Owner harus cek chat WA sebelum mencoba ulang secara manual.');
+        const jid=actualBuyer(o);o.deliveryAttemptAt=new Date().toISOString();orders.save();
+        try{await sendText(sock,jid,'✦ ORIVELA Starfall · #'+id+' ♡\n\n'+text+'\n\nJaga informasi akun ini secara privat.');}catch{throw Error('Pengiriman belum terkonfirmasi. Cek chat WA buyer; jangan kirim ulang otomatis.');}
+        o.deliverySentAt=new Date().toISOString();orders.save();return 'Data pesanan terkirim ke chat pribadi buyer WA. Klik Selesaikan setelah diperiksa.';
+      }
+      const sent=await sendText(sock,o.groupId,'✦ ORIVELA Staff · #'+id+'\n'+text,o.quote);
+      if(sent?.key?.id){o.waReplyIds=[...new Set([...(o.waReplyIds||[]),sent.key.id])].slice(-30);orders.save();}return 'Balasan terkirim ke grup Store WA.';
+    }
+    if(!['ambil','qris','paid','d','cancel','lepas'].includes(action))throw Error('Aksi tidak dikenal.');
+    if(action==='cancel'&&value!=='BELUM BAYAR')throw Error('Konfirmasi BELUM BAYAR setelah cek merchant.');
+    if(action==='d'&&!o.deliverySentAt&&!o.doneAt)throw Error('Kirim data akun lewat tombol Kirim Akun dahulu.');
+    let result='';await handleAdminOrderCommand(sock,{message:{}},null,['.'+action,id,...String(value).trim().split(/\s+/).filter(Boolean)],action,{admin,respond:async t=>{result+=(result?'\n':'')+t;}});return result||'Aksi selesai. Cek status order.';
+  }finally{dcActions.delete(id);}
+}
+const relayInFlight=new Set();
+async function forwardOrderReply(sock,chat,msg,raw,cfg){
+  if(chat!==cfg.groupId||!msg.key.id)return false;
+  const explicit=/^\.(?:pesan|bukti)\s+#?(ORV-[A-F0-9]{12})(?:\s+([\s\S]*))?$/i.exec(raw),quote=quoteMessageId(msg.message);
+  const o=explicit?orders.byId(explicit[1].toUpperCase()):quote?orders.data.orders.find(x=>x.quote?.key?.id===quote||x.waReplyIds?.includes(quote)):null;
+  if(!o||o.groupId!==chat||o.doneAt||o.cancelledAt)return false;
+  const sender=[msg.key.participant,msg.key.participantAlt,msg.key.participantPhone].filter(Boolean).map(x=>String(x).replace(/:\d+@/,'@'));
+  const buyers=[o.buyerJid,o.buyerAccountId,o.quote?.key?.participant].filter(Boolean).map(x=>String(x).replace(/:\d+@/,'@'));
+  if(!sender.some(x=>buyers.includes(x)))return false;
+  const key=msg.key.id, job=o.id+":"+key;if(o.waForwarded?.includes(key)||relayInFlight.has(job))return true;relayInFlight.add(job);
+  const m=msg.message.ephemeralMessage?.message||msg.message;let media=null;
+  try{if(m.imageMessage||m.videoMessage){if(Number((m.imageMessage||m.videoMessage).fileLength)>M.MAX)throw Error('Media maksimal 8 MiB.');media=M.validate(await promos.downloadPhoto(sock,msg));}
+    const text=String(explicit?explicit[2]||'':raw).slice(0,1500);if(!text&&!media)return false;
+    if(!B.waOrderReply)throw Error('Discord belum online.');
+    await B.waOrderReply(o,{key,text,media});o.waForwarded=[...(o.waForwarded||[]),key].slice(-100);orders.save();return true;
+  }catch(e){await sendText(sock,chat,'✦ Pesan ke staff Discord belum terkirim. Coba reply lagi atau .pesan #'+o.id+' isi pesan. Jangan kirim password/OTP di grup.',msg).catch(()=>{});return true;}finally{relayInFlight.delete(job);}
+}
+
 async function handleCommand(sock, msg) {
   if (!msg || !msg.message || msg.key.fromMe) return;
   const chat = msg.key.remoteJid || '';
   const raw = getText(msg.message).trim();
-  if (!isGroupJid(chat)) { if (/^\.link\s+/i.test(raw) && /^\d+@(?:s\.whatsapp\.net|lid)$/.test(chat)) { try { const id=usablePrivateJid(msg.key.remoteJidAlt)||usablePrivateJid(chat);  B.acceptLink(raw.split(/\s+/)[1],id); await sendText(sock,chat,'Akun terhubung! Kembali ke Discord dan gunakan /game.'); } catch(e){await sendText(sock,chat,e.message);} } return; }
+  if (!isGroupJid(chat)) { if (/^\.link\s+/i.test(raw) && /^\d+@(?:s\.whatsapp\.net|lid)$/.test(chat)) { try { const id=usablePrivateJid(msg.key.remoteJidAlt)||usablePrivateJid(chat);  B.acceptLink(raw.split(/\s+/)[1],id); await sendText(sock,chat,'Akun terhubung! Kembali ke Discord dan gunakan os!help.'); } catch(e){await sendText(sock,chat,e.message);} } return; }
   const config = loadConfig();
+  if(await forwardOrderReply(sock,chat,msg,raw,config))return;
   if (chat === config.adminGroupId && await announcements.handle(sock,chat,msg,raw,config)) return;
   if (chat === config.adminGroupId && await promos.handle(sock,chat,msg,raw,config)) return;
   if (!raw) return;
@@ -1641,7 +1689,7 @@ async function connect() {
       }
     }
     if (update.connection === 'open') {
-      B.waSender=async (event)=>{const c=loadConfig();if(activeSocket!==sock||!isGroupJid(c.groupId)||!sock.user?.id)throw Error('WA belum online/grup Store belum diatur');if(event.kind==='info'){const tag=event.tagAll===true;const ids=tag?memberJids(await sock.groupMetadata(c.groupId)):[];await sock.sendMessage(c.groupId,posts.waAnnouncement(event.body,ids,tag));return;}const pages=posts.promoPages(B.flatPromos(),B.allReservations(),postCatalog,{platform:'wa',onlyId:event.promoId});for(const p of pages)await sock.sendMessage(c.groupId,{text:p.title+'\n\n'+p.description});};
+      B.waSender=async (event)=>{const c=loadConfig();if(activeSocket!==sock||!isGroupJid(c.groupId)||!sock.user?.id)throw Error('WA belum online/grup Store belum diatur');if(event.kind==='info'){const tag=event.tagAll===true;const ids=tag?memberJids(await sock.groupMetadata(c.groupId)):[];await sock.sendMessage(c.groupId,M.waContent(posts.waAnnouncement(event.body,ids,tag),event.media));return;}const pages=posts.promoPages(B.flatPromos(),B.allReservations(),postCatalog,{platform:'wa',onlyId:event.promoId});for(const p of pages)await sock.sendMessage(c.groupId,{text:p.title+'\n\n'+p.description});};
       console.log('✦ ORIVELA Starfall ONLINE!');
       console.log('✦ V5.0 | Store · Admin · Luckyverse | Promo · Announcement · Auto Open/Close');
       const c = loadConfig();
@@ -1713,5 +1761,5 @@ if (require.main === module) {
     process.exitCode = 1;
   });
 }
-B.wa={orders,promos,game:luckyverse,loadConfig};
-module.exports = { connect, loadConfig, getText, localId, IDsForParticipant, phoneFromJid, handleCommand, AdminLocks, adminLocks, orders, resolveOrderReference, luckyverse, voucherPrivateMessage, voucherAdminMessage, resolvePrivateJid, promos, sweepPayments, paymentDue, jakartaClock, storeIsOpen, startStoreSchedule, stopStoreSchedule, handleStoreClosedReminder };
+B.wa={orders,promos,game:luckyverse,loadConfig,discordOrderAction,adminLocks,adminOrderMessage};
+module.exports = { performDiscordOrderAction,actualBuyer,forwardOrderReply, connect, loadConfig, getText, localId, IDsForParticipant, phoneFromJid, handleCommand, AdminLocks, adminLocks, orders, resolveOrderReference, luckyverse, voucherPrivateMessage, voucherAdminMessage, resolvePrivateJid, promos, sweepPayments, paymentDue, jakartaClock, storeIsOpen, startStoreSchedule, stopStoreSchedule, handleStoreClosedReminder };
